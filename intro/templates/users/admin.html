@@ -1,0 +1,334 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    administrar tareas
+{% endblock %}
+
+{% block body %}
+<div class="principal_info">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <img class="majach_logo" src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+            </div>
+            <div class="col-5 text-center">
+                {% if user.first_name != "" or user.last_name != "" %}
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                {% else %}
+                    <h2>{{ user.username }}</h2>
+                {% endif %}  
+            </div>
+            <div class="col-3 text-center">
+                <a class="register_button" href="{% url 'intro:logout' %}" data-section="layout" data-value="logout"></a>
+                <a class="responsive_register_button" href="{% url 'intro:logout' %}">
+                    <span class="material-symbols-outlined" style="color: white;">
+                        power_settings_new
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row full-screen-responsive">
+        <div class="col">
+            <h3 data-section="admin" data-value="add-product"></h3>
+            <div class="user_view">
+                <div id="user_form">
+                    <div class="aligth_center">
+                        <button type="button" class="register_button text-center" data-bs-toggle="modal" data-bs-target="#addProduct" onclick="populateModalProduct(null, null, null, null, null)">
+                            <div class="container text-center">
+                                <div class="row">
+                                    <div class="col" data-section="admin" data-value="add" ></div>
+                                    <div class="col"><span class="material-symbols-outlined">shopping_cart</span></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <h3 data-section="admin" data-value="list-products"></h3>
+                <table class="table table-bordered border-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="name"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="photo-product"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="price-product"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="edit"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="delete"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for product in products %}
+                                <tr>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>{{ product.name }}</td>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>
+                                        <a href="{{ product.photo.url }}" target="_blank">
+                                            <img src="{{ product.photo.url }}" alt="{{ product.name }}" width="30">
+                                        </a>
+                                    </td>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>{{ product.price }}</td>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>
+                                        <button type="button" class="transparent-button text-center" data-bs-toggle="modal" data-bs-target="#addProduct"
+                                        onclick="populateModalProduct('{{ product.name }}','{{ product.price }}','{{ product.stock }}','{{ product.id }}')">
+                                            <span class="material-symbols-outlined">
+                                                edit
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>
+                                        <a style="color: black;" href="{% url 'intro:delete_product' product.id %}">
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col">
+            <h3 data-section="admin" data-value="add-personal"></h3>
+            <div class="user_view">
+                <div id="user_form">
+                    <div class="aligth_center">
+                        <button type="button" class="register_button text-center" data-bs-toggle="modal" data-bs-target="#addClient" onclick="populateModal(null, null, null, null, null, null)">
+                            <div class="container text-center">
+                                <div class="row">
+                                    <div class="col" data-section="admin" data-value="add"></div>
+                                    <div class="col"><span class="material-symbols-outlined">person_add</span></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <h3 data-section="admin" data-value="list-employee"></h3>
+                <table class="table table-bordered border-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="name-last"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="edit"></th>
+                            <th scope="col" style="background-color: #466475;" data-section="admin" data-value="delete"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for seller in sellers %}
+                                <tr>
+                                    <td>{{ seller.user.first_name }} {{ seller.user.last_name }}</td>
+                                    <td>
+                                        <button type="button" class="transparent-button text-center" data-bs-toggle="modal" data-bs-target="#addClient"
+                                        onclick="populateModal('{{ seller.user.first_name }}','{{ seller.user.last_name }}','{{ seller.user.username }}','{{ seller.user.email }}','{{ seller.user.phone }}','{{ seller.id }}')">
+                                            <span class="material-symbols-outlined">
+                                                edit
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a style="color: black;" href="{% url 'intro:delete_employee' seller.id %}">
+                                            <span class="material-symbols-outlined">
+                                                delete
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{% url 'intro:admin_view' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="addProductLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProductLabel" data-section="admin" data-value="add-a-product"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-4 input_info display_none">
+                                    <label for="id_product">ID:</label>
+                                </div>
+                                <div class="col-8 input_info display_none">
+                                    <input type="text" name="id_product" id="id_product" placeholder="id_product">
+                                </div>
+                            </div>
+                            <div class="col-4 input_info">
+                                <label for="name" data-section="admin" data-value="name"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="text" name="name" id="name" placeholder="Nombre de producto">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="price" data-section="admin" data-value="price"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="number" name="price" id="price" placeholder="Precio de producto" min="1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="stock" data-section="admin" data-value="stock"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="number" name="stock" id="stock" placeholder="Cantidad de producto" min="1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="description" data-section="admin" data-value="description"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <textarea name="description" id="description" placeholder="Descripción de producto"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="category" data-section="admin" data-value="category"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <select name="category" id="category">
+                                    <option value="0" data-section="admin" data-value="select-category"></option>
+                                    <option value="0">-----------------------------------------------</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="category" data-section="admin" data-value="photo"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="file" name="photo" id="photo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-section="admin" data-value="save-product"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form action="{% url 'intro:create_employee' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="addClient" tabindex="-1" aria-labelledby="addClientLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addClientLabel" data-section="admin" data-value="add-a-personal"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 input_info display_none">
+                                <label for="id">ID:</label>
+                            </div>
+                            <div class="col-8 input_info display_none">
+                                <input type="text" name="id" id="id" placeholder="id_personal">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="first_name" data-section="admin" data-value="names"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="text" name="first_name" id="first_name" placeholder="Nombre/s de personal">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="last_name" data-section="admin" data-value="last"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="text" name="last_name" id="last_name" placeholder="Apellido/s del personal">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="username" data-section="layout" data-value="username"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="text" name="username" id="username" placeholder="Usuario para el personal">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="email" data-section="register" data-value="email"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="email" name="email" id="email" placeholder="Correo para el personal">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="password" data-section="layout" data-value="password"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="password" name="password" id="password" placeholder="Contraseña temporal">
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                                    <span class="material-symbols-outlined">
+                                        visibility
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="password2" data-section="admin" data-value="confirm"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="password" name="password2" id="password2" placeholder="Confirmar contraseña">
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password2')">
+                                    <span class="material-symbols-outlined">
+                                        visibility
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="phone" data-section="register" data-value="phone"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="number" name="phone" id="phone" placeholder="Celular de personal" min="9" max="10">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 input_info">
+                                <label for="category" data-section="admin" data-value="photo"></label>
+                            </div>
+                            <div class="col-8 input_info">
+                                <input type="file" name="photo" id="photo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-section="admin" data-value="save-personal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

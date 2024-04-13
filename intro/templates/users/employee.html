@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Ver clientes
+{% endblock %}
+
+{% block body %}
+<div class="principal_info">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <img class="majach_logo" src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+            </div>
+            <div class="col-5 text-center">
+                {% if user.first_name != "" or user.last_name != "" %}
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <h2> <span data-section="employee" data-value="code">Código:</span> {{ employee.code_seller }}</h2>
+                {% else %}
+                    <h2>{{ user.username }}</h2>
+                    <h2> <span data-section="employee" data-value="code">Código:</span> {{ employee.code_seller }}</h2>
+                {% endif %}  
+            </div>
+            <div class="col-3 text-center">
+                <a class="register_button" href="{% url 'intro:logout' %}" data-section="layout" data-value="logout"></a>
+                <a class="responsive_register_button" href="{% url 'intro:logout' %}">
+                    <span class="material-symbols-outlined" style="color: white;">
+                        power_settings_new
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>Agregar nuevos cliente</h3>
+<div class="user_view">
+    <div id="user_form">
+        <div class="aligth_center">
+            <button type="button" class="register_button text-center" data-bs-toggle="modal" data-bs-target="#addClient">
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col">Agregar</div>
+                        <div class="col"><span class="material-symbols-outlined">person_add</span></div>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+    <h3>Empleados en lista</h3>
+    <table class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="username"></th>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="email"></th>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="phone"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for client in clients %}
+                    <tr>
+                        <td>{{ client.user.username }}</td>
+                        <td>{{ client.user.email }}</td>
+                        <td>{{ client.user.phone }}</td>
+                    </tr>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

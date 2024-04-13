@@ -1,0 +1,96 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %} Registrar Majach {% endblock %}
+
+{% block body %}
+<div class="principal_info">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img class="majach_logo" src="{% static 'img/Logo majach.jpg' %}" alt="majach" width="100">
+            </div>
+            <div class="col">
+                <h2 data-section="register" data-value="title"></h2>      
+            </div>
+            <div class="col">
+                <a href="">&nbsp</a>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="{% url 'intro:register' %}" method="post">
+    {% csrf_token %}
+    <div class="register_view">
+        <div id="form_register">
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 input_info">
+                        <label data-section="layout" data-value="username"></label>
+                    </div>
+                    <div class="col-8 input_info">
+                        <input type="text" name="username" id="username" placeholder="Usuario" value="{{ username }}">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 input_info">
+                        <label for="email" data-section="register" data-value="email"></label>
+                    </div>
+                    <div class="col-8 input_info">
+                        <input type="email" name="email" id="email" placeholder="Correo" value="{{ email }}">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 input_info">
+                        <label for="password" data-section="layout" data-value="password"></label>
+                    </div>
+                    <div class="col-8 input_info">
+                        <input type="password" name="password" id="password" placeholder="Contraseña">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                            <span class="material-symbols-outlined">
+                                visibility
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 input_info">
+                        <label for="password2" data-section="register" data-value="confirm-password"></label>
+                    </div>
+                    <div class="col-8 input_info">
+                        <input type="password" name="password2" id="password2" placeholder="Contraseña">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password2')">
+                            <span class="material-symbols-outlined">
+                                visibility
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 input_info">
+                        <label for="phone" data-section="register" data-value="phone"></label>
+                    </div>
+                    <div class="col-8 input_info">
+                        <input type="number" name="phone" id="phone" placeholder="Celular" value="{{ phone }}" min="9" max="10">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="aligth_center">
+                <button type="submit" class="register_button" data-section="register" data-value="register"></button>
+            </div>
+            <div class="aligth_center">
+                <a href="{% url 'intro:intro' %}" class="register_button aligth_center" data-section="register" data-value="tienda"></a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

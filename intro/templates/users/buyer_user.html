@@ -1,0 +1,211 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Perfil {{ user.username }}
+{% endblock %}
+
+{% block body %}
+<div class="principal_info">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <img class="majach_logo" src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+            </div>
+            <div class="col-5 text-center">
+                {% if user.first_name != "" or user.last_name != "" %}
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                {% else %}
+                    <h2>{{ user.username }}</h2>
+                {% endif %}  
+            </div>
+            <div class="col-3 text-center">
+                <a class="register_button" href="{% url 'intro:logout' %}" data-section="layout" data-value="logout"></a>
+                <a class="responsive_register_button" href="{% url 'intro:logout' %}">
+                    <span class="material-symbols-outlined" style="color: white;">
+                        power_settings_new
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="edit_info" data-section="personal-page" data-value="edit-information"></h4>
+<div class="container text-center">
+    <div class="row full-screen-responsive">
+        <div class="col">
+            <form action="{% url 'intro:user' %}" method="post">
+                {% csrf_token %}
+                <h3 data-section="personal-page" data-value="information"></h3>
+                <div class="user_view">
+                    <div id="user_form">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="first_name" data-section="admin" data-value="names"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="first_name" id="first_name" placeholder="Nombres" value="{{ user.first_name }}" {% if user.is_admin or user.is_seller %} readonly {% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="last_name" data-section="admin" data-value="last"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="last_name" id="last_name" placeholder="Apellidos" value="{{ user.last_name }}" {% if user.is_admin or user.is_seller %} readonly {% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="username" data-section="layout" data-value="username"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="username" id="username" placeholder="Usuario" value="{{ user.username }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="phone" data-section="register" data-value="phone"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="number" name="phone" id="phone" placeholder="Usuario" value="{{ user.phone }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="email" data-section="register" data-value="email"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="email" name="email" id="email" placeholder="Correo" value="{{ user.email }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        {% if user.is_admin or user.is_seller %}
+                        {% else %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="principal_address" data-section="personal-page" data-value="principal-streret"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="principal_address" id="principal_address" placeholder="Calle principal" value="{{ client.principal_address }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="secondary_address" data-section="personal-page" data-value="secondary-street"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="secondary_address" id="secondary_address" placeholder="Calle secundaria" value="{{ client.secondary_address }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 input_info">
+                                    <label for="no_house" data-section="personal-page" data-value="no-house"></label>
+                                </div>
+                                <div class="col-8 input_info">
+                                    <input type="text" name="no_house" id="no_house" placeholder="Numero de casa" value="{{ client.no_house }}">
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="aligth_center">
+                            <button type="submit" class="register_button" data-section="personal-page" data-value="update-information"></button>
+                        </div>
+                    </div>
+                </div>     
+            </form>
+        </div>
+        <div class="col">
+            <form action="{% url 'intro:update_password_buyer' %}" method="post">
+                {% csrf_token %}
+                <h3>Actualizar contraseña</h3>
+                <div class="user_view">
+                    <div id="user_form">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-5 input_info">
+                                    <label for="password" data-section="personal-page" data-value="actual-password"></label>
+                                </div>
+                                <div class="col-6 input_info">
+                                    <input type="password" name="password" id="password" placeholder="Contraseña">
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password')">
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-5 input_info">
+                                    <label for="password_change" data-section="personal-page" data-value="new-password"></label>
+                                </div>
+                                <div class="col-6 input_info">
+                                    <input type="password" name="password_change" id="password_change" placeholder="Contraseña">
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password_change')">
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-5 input_info">
+                                    <label for="password_change2" data-section="register" data-value="confirm-password"></label>
+                                </div>
+                                <div class="col-6 input_info">
+                                    <input type="password" name="password_change2" id="password_change2" placeholder="Contraseña">
+                                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password_change2')">
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="aligth_center">
+                            <button type="submit" class="register_button" data-section="personal-page" data-value="change-password"></button>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <a href="" class="register_button bg-none">
+                                        <img src="{% static 'img/favorito-Freepik.png' %}" alt="Favoritos" width="100">
+                                        <br><br>
+                                        <h4 data-section="personal-page" data-value="favorite">Articulos favoritos</h4>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="" class="register_button bg-none">
+                                        <img src="{% static 'img/carrito-de-compras-Freepik.png' %}" alt="Carrito de compras" width="100">
+                                        <br><br>
+                                        <h4 data-section="personal-page" data-value="cart">Carrito de compras</h4>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{
+    "layout": {
+        "login": "Iniciar sesión",
+        "forgot-username": "¿Olvidaste tu usuario? <a href=''>Recuperar usuario</a>",
+        "forgot-password": "¿Olvidaste tu contraseña? <a href=''>Recuperar contraseña</a>",
+        "register": "¿Tienes cuenta? <a href='/register'>Registrate ahora</a>",
+        "password": "Contraseña:",
+        "username": "Usuario:",
+        "logout": "Cerrar sesión",
+        "show-more": "Ver más"
+    },
+    "register": {
+        "title": "Regista tu usuario",
+        "email": "Correo:",
+        "confirm-password": "Confirmar contraseña:",
+        "phone": "Celular:",
+        "register": "Registrar",
+        "tienda": "Ir a la tienda"
+    },
+    "admin": {
+        "add-product": "Agregar nuevos productos",
+        "add-personal": "Agregar nuevos empleados",
+        "add": "Agregar",
+        "name": "Nombre:",
+        "names": "Nombre/s:",
+        "last": "Apellido/s:",
+        "price": "Precio:",
+        "stock": "Stock:",
+        "description": "Descripción:",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "name-last": "Nombre/s y Apellido/s",
+        "add-a-product": "Agregar un producto",
+        "add-a-personal": "Agregar un empleado",
+        "category": "Categoría",
+        "select-category": "Selecciona una categoria",
+        "photo": "Foto:",
+        "save-product": "Guardar producto",
+        "save-personal": "Guardar personal",
+        "confirm": "Confirmar:",
+        "list-employee": "Lista de empleados",
+        "list-products": "Lista de productos",
+        "photo-product": "Foto",
+        "price-product": "Precio"
+    },
+    "personal-page": {
+        "edit-information": "Editar información",
+        "information": "Información personal",
+        "principal-streret": "Calle principal:",
+        "secondary-street": "Calle secundaria:",
+        "no-house": "Número de casa:",
+        "update-information": "Actualizar información",
+        "actual-password": "Contraseña actual:",
+        "new-password": "Nueva contraseña:",
+        "change-password": "Cambiar contraseña",
+        "favorite": "Articulos favoritos",
+        "cart": "Carrito de compras"
+    },
+    "employee": {
+        "username": "Usuario",
+        "email": "Correo",
+        "phone": "Celular",
+        "code": "Código: "
+    }
+}
