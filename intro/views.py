@@ -38,7 +38,7 @@ def items_category(request, category):
     page = request.GET.get('page', 1)
 
     try:
-        paginator = Paginator(products, 100)
+        paginator = Paginator(products, 40)
         products = paginator.page(page)
     except:
         paginator = Paginator(products, 1)
