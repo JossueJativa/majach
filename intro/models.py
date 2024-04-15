@@ -48,6 +48,10 @@ class Client(models.Model):
     secondary_address = models.CharField(max_length=100, null=True)
     no_house = models.CharField(max_length=10)
 
+class Favorite(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     code_seller = models.CharField(max_length=10, unique=True)

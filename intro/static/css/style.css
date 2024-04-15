@@ -575,12 +575,17 @@ a{
 
 .container-photo {
     width: 100%;
-    height: auto;
+    max-height: 50vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 10px;
+}
+
+.container-photo img {
+    width: auto;
+    max-height: 50vh;
 }
 
 .text-section {
