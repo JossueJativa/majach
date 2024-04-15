@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Client, Category, Product, Seller
 import random
@@ -31,6 +32,28 @@ def login_view(request):
 def intro(request):
     request.session['redirect_to'] = 'intro.html'
     return render(request, 'intro.html')
+
+def items_category(request, category):
+    products = Product.objects.filter(category=Category.objects.get(name=category))
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(products, 100)
+        products = paginator.page(page)
+    except:
+        paginator = Paginator(products, 1)
+        products = paginator.page(1)
+
+    return render(request, 'items_category.html', {
+        'entity': products,
+        'paginator': paginator
+    })
+
+def item(request, id):
+    product = Product.objects.get(pk=id)
+    return render(request, 'item.html', {
+        'product': product
+    })
 
 def register(request):
     if request.user.is_authenticated:
@@ -68,13 +91,6 @@ def register(request):
                 'phone': phone
             })
     return render(request, 'register.html')
-
-def items_category(request, category):
-    products = Product.objects.filter(category=Category.objects.get(name=category))
-
-    return render(request, 'items_category.html', {
-        'products': products
-    })
 
 def logout_view(request):
     if request.user.is_authenticated:

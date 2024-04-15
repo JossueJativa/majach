@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %} Home Majach {% endblock %}
+
+{% block body %}
+<div class="container text-center">
+    <div class="row row-cols-2">
+        <div class="col-6">
+            <div class="container-photo">
+                <img src="{{ product.photo.url }}" class="img-fluid" alt="{{ product.name }}">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="container text-section">
+                <div class="col">
+                    <h2>{{ product.name }}</h2>
+                </div>
+                <div class="col">
+                    <h5>{{ product.description }}</h5>
+                </div>
+                <div class="row cont-flex">
+                    <div class="col">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="fav-item item-cash">
+                                <span class="material-symbols-outlined bigger-icon">
+                                    favorite
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col"><div class="price-item"><h4>{{ product.price }}</h4></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
