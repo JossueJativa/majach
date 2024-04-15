@@ -735,7 +735,7 @@ a{
 
     #sidebar {
         width: 100%;
-        height: auto;
+        height: 100%;
         position: relative;
         flex-direction: row;
         align-items: center;
@@ -747,7 +747,7 @@ a{
     }
 
     #sidebar ul {
-        margin-top: 200%;
+        margin-top: 0%;
     }
 
     .box-carousel {
