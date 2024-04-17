@@ -22,7 +22,7 @@ class Category(models.Model):
             return self.photo.url
         return None
     
-class comment(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
@@ -35,7 +35,7 @@ class Product(models.Model):
     photo = models.ImageField(upload_to='products/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     stars = models.FloatField(null=True, blank=True, default=0.0)
-    comments = models.ManyToManyField(comment, blank=True)
+    comments = models.ManyToManyField(Comment, blank=True)
 
     def photo_url(self):
         if self.photo:
