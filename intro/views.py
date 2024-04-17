@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Client, Category, Product, Seller
+from .models import User, Client, Category, Product, Seller, Comment
 import random
 import string
 
@@ -51,8 +51,24 @@ def items_category(request, category):
 
 def item(request, id):
     product = Product.objects.get(pk=id)
+
+    # Sacar una media de las estrellas
+    stars = 0
+    for c in product.comments.all():
+        stars += c.stars
+
+    try:
+        star = stars / product.comments.count()
+    except:
+        star = 0
+
+    # Quitar los decimales
+    star = int(star)
+
     return render(request, 'item.html', {
-        'product': product
+        'product': product,
+        "comments": product.comments.all(),
+        'star': star
     })
 
 def register(request):
@@ -342,4 +358,43 @@ def look_clients(request):
     else:
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión como administrador para acceder a esta página'
+        })
+    
+def comment(request, product_id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            product = Product.objects.get(pk=product_id)
+            user = User.objects.get(pk=request.user.id)
+            comment = request.POST.get('comment')
+            rating = request.POST.get('rating')
+
+            comment = Comment(user=user, comment=comment, stars=rating)
+            comment.save()
+
+            product.comments.add(comment)
+            product.save()
+
+            # Sacar una media de las estrellas
+            stars = 0
+            for c in product.comments.all():
+                stars += c.stars
+
+            star = stars / product.comments.count()
+            # Quitar los decimales
+            star = int(star)
+
+            return render(request, 'item.html', {
+                'product': product,
+                'success': 'Comentario agregado correctamente',
+                'comments': product.comments.all(),
+                'star': star
+            })
+        else:
+            return render(request, 'item.html', {
+                'product': Product.objects.get(pk=product_id),
+                'error': 'Debes iniciar sesión para comentar'
+            })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
         })

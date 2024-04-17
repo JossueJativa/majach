@@ -703,6 +703,12 @@ input[type="radio"]:checked+label {
     color: #f8d100;
 }
 
+.see-rating {
+    color: #bbb;
+    font-size: 20px;
+    transition: color .4s;
+}
+
 /* Pantallas pequeñas (celulares) */
 @media (max-width: 765px) {
     .me-2 {

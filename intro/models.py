@@ -25,6 +25,7 @@ class Category(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
+    stars = models.FloatField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
 class Product(models.Model):
@@ -34,7 +35,6 @@ class Product(models.Model):
     description = models.TextField()
     photo = models.ImageField(upload_to='products/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    stars = models.FloatField(null=True, blank=True, default=0.0)
     comments = models.ManyToManyField(Comment, blank=True)
 
     def photo_url(self):
@@ -60,10 +60,14 @@ class ClientSellerRelation(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
-# Creacion de ventas
 class Sale(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField()
     total = models.FloatField()
+
+class Cart(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
