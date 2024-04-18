@@ -69,7 +69,7 @@
                                     <img src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
                                 </a>
                             {% else %}
-                                <a type="button" href="" class="circular_btn">
+                                <a type="button" href="{% url 'intro:favorite' %}" class="circular_btn">
                                     <img src="{% static 'img/favorito-Freepik.png' %}" alt="Favoritos" width="100">
                                 </a>
                                 <a type="button" href="" class="circular_btn">

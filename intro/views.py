@@ -485,3 +485,15 @@ def delete_favorite_item(request, product_id):
             'error': 'Debes iniciar sesión sesión para eliminar de favoritos',
             'comments': comment
         })
+    
+def favorite_items(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        favorites = Favorite.objects.filter(user=user)
+        return render(request, 'users/favorite.html', {
+            'favorites': favorites
+        })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })

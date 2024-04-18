@@ -69,5 +69,11 @@
     },
     "comment": {
         "comment": "Comentarios"
+    },
+    "category": {
+        "products": "Productos de la categoria"
+    },
+    "favorite": {
+        "favorite": "Favoritos"
     }
 }
