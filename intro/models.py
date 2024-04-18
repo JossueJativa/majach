@@ -49,8 +49,8 @@ class Client(models.Model):
     no_house = models.CharField(max_length=10)
 
 class Favorite(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
 
 class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

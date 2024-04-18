@@ -21,14 +21,21 @@
                 </div>
                 <div class="row cont-flex">
                     <div class="col">
-                        <form action="" method="post">
+                        {% if not favorite %}
+                        <form action="{% url 'intro:set_favorite_item' product.id %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="fav-item item-cash">
-                                <span class="material-symbols-outlined bigger-icon">
-                                    favorite
-                                </span>
+                                <i class="bi bi-heart bigger-icon"></i>
                             </button>
                         </form>
+                        {% else %}
+                        <form action="{% url 'intro:delete_favorite_item' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="fav-item item-cash">
+                                <i class="bi bi-heart-fill bigger-icon"></i>
+                            </button>
+                        </form>
+                        {% endif %}
                     </div>
                     <div class="col"><div class="price-item"><h4>{{ product.price }}</h4></div></div>
                 </div>
@@ -110,7 +117,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <textarea class="textarea" name="comment" id="comment"></textarea>
+                                <textarea class="textarea" name="comment" id="comment" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -128,8 +135,50 @@
 </form>
 {% endif %}
 
+<hr>
+<h3 class="text-center" data-section="comment" data-value="comment"></h3>
 {% for comment in comments %}
-    {{ comment.comment }}
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2">
+        <div class="col-lg-3">
+            <img class="circle-img" src="{{ comment.user.photo.url }}" alt="user_photo" width="100">
+            {% if comment.stars == 1 %}
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            {% elif comment.stars == 2 %}
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            {% elif comment.stars == 3 %}
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            {% elif comment.stars == 4 %}
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating"></i>
+            {% elif comment.stars == 5 %}
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            <i class="bi bi-star-fill see-rating" style="color: gold;"></i>
+            {% endif %}
+        </div>
+        <div class="col-lg-9">
+            <textarea class="textarea" name="comment" id="comment" readonly>{{ comment.comment }}</textarea>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
 <script src="{% static 'js/stars.js' %}"></script>

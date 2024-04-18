@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Client, Category, Product, Seller, Comment
+from .models import User, Client, Category, Product, Seller, Comment, Favorite
 import random
 import string
 
@@ -65,10 +65,28 @@ def item(request, id):
     # Quitar los decimales
     star = int(star)
 
+    # Ordenar de mas estrellas a menos estrellas
+    comment = product.comments.all().order_by('-stars')
+
+    # Comprobar si el producto está en favoritos
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        try:
+            favorite = Favorite.objects.filter(user=user, product=product)
+            if favorite:
+                favorite = True
+            else:
+                favorite = False
+        except:
+            favorite = False
+    else:
+        favorite = False
+
     return render(request, 'item.html', {
         'product': product,
-        "comments": product.comments.all(),
-        'star': star
+        "comments": comment,
+        'star': star,
+        'favorite': favorite
     })
 
 def register(request):
@@ -383,10 +401,13 @@ def comment(request, product_id):
             # Quitar los decimales
             star = int(star)
 
+            # Ordenar de mas estrellas a menos estrellas
+            comment = product.comments.all().order_by('-stars')
+
             return render(request, 'item.html', {
                 'product': product,
                 'success': 'Comentario agregado correctamente',
-                'comments': product.comments.all(),
+                'comments': comment,
                 'star': star
             })
         else:
@@ -395,6 +416,72 @@ def comment(request, product_id):
                 'error': 'Debes iniciar sesión para comentar'
             })
     else:
-        return render(request, 'intro.html', {
-            'error': 'Debes iniciar sesión para acceder a esta página'
+        product = Product.objects.get(pk=product_id)
+        comment = product.comments.all().order_by('-stars')
+        return render(request, 'item.html', {
+            'product': Product.objects.get(pk=product_id),
+            'error': 'Debes iniciar sesión para acceder a esta página',
+            'comments': comment
+        })        
+    
+def set_favorite_item(request, product_id):
+    if request.user.is_authenticated:
+        product = Product.objects.get(pk=product_id)
+        user = User.objects.get(pk=request.user.id)
+        favorite = Favorite(user=user, product=product)
+        favorite.save()
+
+        # comprobar si el producto está en favoritos
+        try:
+            favorite = Favorite.objects.filter(user=user, product=product)
+            if favorite:
+                favorite = True
+            else:
+                favorite = False
+        except:
+            favorite = False
+
+        return render(request, 'item.html', {
+            'product': product,
+            'success': 'Producto añadido a favoritos',
+            'favorite': favorite
+        })
+    else:
+        product = Product.objects.get(pk=product_id)
+        comment = product.comments.all().order_by('-stars')
+        return render(request, 'item.html', {
+            'product': Product.objects.get(pk=product_id),
+            'error': 'Debes iniciar sesión para agregar a favoritos',
+            'comments': comment
+        })
+    
+def delete_favorite_item(request, product_id):
+    if request.user.is_authenticated:
+        product = Product.objects.get(pk=product_id)
+        user = User.objects.get(pk=request.user.id)
+        favorite = Favorite.objects.filter(user=user, product=product).first()
+        favorite.delete()
+
+        # comprobar si el producto está en favoritos
+        try:
+            favorite = Favorite.objects.filter(user=user, product=product)
+            if favorite:
+                favorite = True
+            else:
+                favorite = False
+        except:
+            favorite = False
+
+        return render(request, 'item.html', {
+            'product': product,
+            'success': 'Producto eliminado de favoritos',
+            'favorite': favorite
+        })
+    else:
+        product = Product.objects.get(pk=product_id)
+        comment = product.comments.all().order_by('-stars')
+        return render(request, 'item.html', {
+            'product': Product.objects.get(pk=product_id),
+            'error': 'Debes iniciar sesión sesión para eliminar de favoritos',
+            'comments': comment
         })

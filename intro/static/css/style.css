@@ -630,7 +630,7 @@ a{
 }
 
 .bigger-icon {
-    font-size: 5.5rem !important;
+    font-size: 4rem !important;
 }
 
 .padding-context {
@@ -707,6 +707,10 @@ input[type="radio"]:checked+label {
     color: #bbb;
     font-size: 20px;
     transition: color .4s;
+}
+
+.circle-img {
+    border-radius: 50%;
 }
 
 /* Pantallas pequeñas (celulares) */

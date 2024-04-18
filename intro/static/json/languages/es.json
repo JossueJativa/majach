@@ -66,5 +66,8 @@
         "qualification": "Calificacion",
         "add-cart": "Agregar al carrito <span><i class='bi bi-cart'></i></span>",
         "comment": "Comentar"
+    },
+    "comment": {
+        "comment": "Comentarios"
     }
 }
