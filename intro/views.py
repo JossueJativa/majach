@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Client, Category, Product, Seller, Comment, Favorite
+from .models import User, Client, Category, Product, Seller, Comment, Favorite, Cart
 import random
 import string
 
@@ -493,6 +493,45 @@ def favorite_items(request):
         return render(request, 'users/favorite.html', {
             'favorites': favorites
         })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def cart(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        try:
+            cart = Cart.objects.filter(client=Client.objects.get(user=user))
+        except:
+            cart = None
+
+        # Calcular el total
+        total = 0
+        for c in cart:
+            total += c.product.price * c.quantity
+
+        return render(request, 'users/cart.html', {
+            'cart': cart,
+            'total': total
+        })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def add_to_cart(request, product_id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            client = Client.objects.get(user=request.user)
+            product = Product.objects.get(pk=product_id)
+            quantity = 1
+            cart = Cart(client=client, product=product, quantity=quantity)
+            cart.save()
+            return render(request, 'users/cart.html', {
+                'success': 'Producto añadido al carrito',
+                'cart': Cart.objects.filter(client=client)
+            })
     else:
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión para acceder a esta página'

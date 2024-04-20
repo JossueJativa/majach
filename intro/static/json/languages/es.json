@@ -75,5 +75,10 @@
     },
     "favorite": {
         "favorite": "Favoritos"
+    },
+    "cart": {
+        "buy": "Comprar productos",
+        "back": "Volver a la tienda",
+        "cart": "Carrito de compras"
     }
 }

@@ -40,43 +40,43 @@
                 {% else %}
                     <div class="tree_buttons">
                         {% if is_seller %}
-                            <a type="button" href="" class="circular_btn">
-                                <img src="{% static 'img/usuario-Freepik.png' %}" alt="{{ user.username }}" width="100">
+                            <a type="button" href="#" class="circular_btn">
+                                <img src="{% static 'img/usuario-Freepik.png' %}" alt="photo_user" width="100">
                             </a>
                         {% elif is_admin %}
-                            <a type="button" href="" class="circular_btn">
-                                <img src="{% static 'img/usuario-Freepik.png' %}" alt="{{ user.username }}" width="100">
+                            <a type="button" href="#" class="circular_btn">
+                                <img src="{% static 'img/usuario-Freepik.png' %}" alt="photo_user" width="100">
                             </a>
                         {% else %}
                             {% if user.is_admin %}
-                                <a type="button" href="" class="circular_btn">
+                                <a type="button" href="#" class="circular_btn">
                                     <img src="{% static 'img/grafico-circular-freepik.png' %}" alt="Favoritos" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:admin_view' %}" class="circular_btn">
                                     <img src="{% static 'img/setting-freepik.png' %}" alt="Carrito de compras" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:user' %}" class="circular_btn">
-                                    <img src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+                                    <img src="{{ user.photo.url }}" alt="photo_user" width="100">
                                 </a>
                             {% elif user.is_seller %}
-                                <a type="button" href="" class="circular_btn">
+                                <a type="button" href="{% url 'intro:favorite' %}" class="circular_btn">
                                     <img src="{% static 'img/favorito-Freepik.png' %}" alt="Favoritos" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:look_clients' %}" class="circular_btn">
                                     <img src="{% static 'img/setting-freepik.png' %}" alt="Carrito de compras" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:user' %}" class="circular_btn">
-                                    <img src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+                                    <img src="{{ user.photo.url }}" alt="photo_user" width="100">
                                 </a>
                             {% else %}
                                 <a type="button" href="{% url 'intro:favorite' %}" class="circular_btn">
                                     <img src="{% static 'img/favorito-Freepik.png' %}" alt="Favoritos" width="100">
                                 </a>
-                                <a type="button" href="" class="circular_btn">
+                                <a type="button" href="{% url 'intro:cart' %}" class="circular_btn">
                                     <img src="{% static 'img/carrito-de-compras-Freepik.png' %}" alt="Carrito de compras" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:user' %}" class="circular_btn">
-                                    <img src="{{ user.photo.url }}" alt="{{ user.username }}" width="100">
+                                    <img src="{{ user.photo.url }}" alt="photo_user" width="100">
                                 </a>
                             {% endif %}
                         {% endif %}
@@ -129,7 +129,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-4 input_info">
-                                        <label for="username" data-section="layout" data-value="username">Usuario:</label>
+                                        <label for="username" data-section="layout" data-value="username"></label>
                                     </div>
                                     <div class="col-8 input_info">
                                         <input type="text" name="username" id="username" placeholder="Usuario">
@@ -139,7 +139,7 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-4 input_info">
-                                        <label for="password" data-section="layout" data-value="password">Contraseña:</label>
+                                        <label for="password" data-section="layout" data-value="password"></label>
                                     </div>
                                     <div class="col-8 input_info">
                                         <input type="password" name="password" id="password" placeholder="Contraseña">

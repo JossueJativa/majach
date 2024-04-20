@@ -38,7 +38,7 @@
                         </form>
                         {% endif %}
                     </div>
-                    <div class="col"><div class="price-item"><h4>{{ product.price }}</h4></div></div>
+                    <div class="col"><div class="price-item"><h4>$ {{ product.price }}</h4></div></div>
                 </div>
             </div>
         </div>
@@ -86,7 +86,10 @@
                 </div>
             </div>
             <div class="col-6">
-                <button type="button" class="btn-buyproduct" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><span data-section="item" data-value="add-cart"></span></button>
+                <form action="{% url 'intro:add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-buyproduct"><span data-section="item" data-value="add-cart"></span></button>
+                </form>
             </div>
         </div>
     </div>

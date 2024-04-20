@@ -663,6 +663,20 @@ a{
     border-radius: 50px;
 }
 
+.btn-back {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #030637;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
 .conntainer-comment {
     width: 100%;
     height: auto;
@@ -711,6 +725,49 @@ input[type="radio"]:checked+label {
 
 .circle-img {
     border-radius: 50%;
+}
+
+.fixed-container {
+    width: 27%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-blue {
+    background-color: #073F74;
+    color: #ffffff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.container-product {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.cart-product {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #466475;
+    color: #ffffff;
+    border-radius: 10px;
 }
 
 /* Pantallas pequeñas (celulares) */
@@ -858,6 +915,14 @@ input[type="radio"]:checked+label {
 
     .grid-item {
         width: 100%;
+    }
+
+    .fixed-container {
+        width: 45%;
+    }
+
+    .button-class {
+        justify-content: center;
     }
 }
 
