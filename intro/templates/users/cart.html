@@ -18,15 +18,40 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="container">
-                                    <div class="row row-cols-1">
+                                    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
                                         <div class="col">
                                             <h4>{{ product.product.name }}</h4>
                                         </div>
                                         <div class="col">
-                                            
+                                            <div class="container text-center">
+                                                <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+                                                    <div class="col">
+                                                        <form action="{% url 'intro:add_one_product' product.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="add-minus-price-btn">
+                                                                <i class="bi bi-plus-circle-fill"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col">
+                                                        <form action="{% url 'intro:remove_one_product' product.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="add-minus-price-btn">
+                                                                <i class="bi bi-dash-circle-fill"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row row-cols-2 align-items-end">
+                                        <div class="col">
+                                            &nbsp;
+                                        </div>
+                                        <div class="col">
+                                            <input class="text-center input-quantity" id="stock" type="number" value="{{ product.quantity }}" min="1" width="30" readonly>
+                                        </div>
                                         <div class="col">
                                             &nbsp;
                                         </div>
@@ -35,7 +60,7 @@
                                                 <div class="row button-class">
                                                     <div class="col text-center">${{ product.product.price | floatformat:2 }}</div>
                                                     <div class="col">
-                                                        <form action="" method="post">
+                                                        <form action="{% url 'intro:delete_cart' product.id %}" method="post">
                                                             {% csrf_token %}
                                                             <button type="submit" class="item-cash">
                                                                 <i class="bi bi-trash-fill"></i>

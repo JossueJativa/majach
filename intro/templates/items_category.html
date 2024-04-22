@@ -8,6 +8,7 @@
 <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
         {% for product in entity %}
+        {% if product.stock > 0 %}
         <div class="conatiner-ineer">
             <a href="{% url 'intro:product' product.id %}" class="col box-product">
                 <div class="row row-cols-1">
@@ -18,7 +19,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <h3 class="cl-white">{{ product.name }}</h3>
+                            <h3 class="cl-black">{{ product.name }}</h3>
                         </div>
                         <div class="col">
                             <div class="button-class">
@@ -29,6 +30,7 @@
                 </div>
             </a>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </div>

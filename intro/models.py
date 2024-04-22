@@ -68,6 +68,6 @@ class Sale(models.Model):
     total = models.FloatField()
 
 class Cart(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     quantity = models.IntegerField()

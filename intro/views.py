@@ -502,14 +502,17 @@ def cart(request):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
         try:
-            cart = Cart.objects.filter(client=Client.objects.get(user=user))
+            cart = Cart.objects.filter(user=user)
         except:
             cart = None
 
         # Calcular el total
         total = 0
-        for c in cart:
-            total += c.product.price * c.quantity
+        try:
+            for c in cart:
+                total += c.product.price
+        except:
+            total = 0
 
         return render(request, 'users/cart.html', {
             'cart': cart,
@@ -523,14 +526,74 @@ def cart(request):
 def add_to_cart(request, product_id):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            client = Client.objects.get(user=request.user)
+            user = User.objects.get(pk=request.user.id)
             product = Product.objects.get(pk=product_id)
             quantity = 1
-            cart = Cart(client=client, product=product, quantity=quantity)
+            cart = Cart(user=user, product=product, quantity=quantity)
             cart.save()
             return render(request, 'users/cart.html', {
                 'success': 'Producto añadido al carrito',
-                'cart': Cart.objects.filter(client=client)
+                'cart': Cart.objects.filter(user=user)
+            })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def delete_cart(request, product_id):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        try:
+            cart = Cart.objects.get(pk=product_id)
+            cart.delete()
+
+            return render(request, 'users/cart.html', {
+                'success': 'Producto eliminado del carrito',
+                'cart': Cart.objects.filter(user=user)
+            })
+        except:
+            return render(request, 'users/cart.html', {
+                'error': 'El producto no está en el carrito',
+                'cart': Cart.objects.filter(user=user)
+            })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def add_one_product(request, product_id):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        cart = Cart.objects.get(pk=product_id)
+        cart.quantity += 1
+        cart.save()
+
+        return render(request, 'users/cart.html', {
+            'success': 'Producto añadido al carrito',
+            'cart': Cart.objects.filter(user=user)
+        })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def remove_one_product(request, product_id):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        cart = Cart.objects.get(pk=product_id)
+        if cart.quantity > 1:
+            cart.quantity -= 1
+            cart.save()
+
+            return render(request, 'users/cart.html', {
+                'success': 'Producto eliminado del carrito',
+                'cart': Cart.objects.filter(user=user)
+            })
+        else:
+            cart.delete()
+            return render(request, 'users/cart.html', {
+                'success': 'Producto eliminado del carrito',
+                'cart': Cart.objects.filter(user=user)
             })
     else:
         return render(request, 'intro.html', {

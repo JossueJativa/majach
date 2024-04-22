@@ -3,7 +3,7 @@ document.getElementById("price").addEventListener('invalid', () => {
 });
 
 document.getElementById("stock").addEventListener('invalid', () => {
-    document.getElementById("stock").setCustomValidity("La cantidad debe ser un número mayor a 0");
+    document.getElementById("stock").setCustomValidity("La cantidad debe ser un número mayor o igual a 0");
 });
 
 document.getElementById("phone").addEventListener('invalid', () => {
