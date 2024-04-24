@@ -56,18 +56,25 @@ class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     code_seller = models.CharField(max_length=10, unique=True)
 
-class ClientSellerRelation(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
-
-class Sale(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    quantity = models.IntegerField()
-    total = models.FloatField()
-
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     quantity = models.IntegerField()
+
+class Product_Quantity(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+class ClientSellerRelation(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    done_sale = models.BooleanField(default=False)
+    Product_Quantity = models.ManyToManyField(Product_Quantity)
+    is_delivered = models.BooleanField(default=False)
+    total = models.FloatField()
+
+class Sale(models.Model):
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    Product_Quantity = models.ManyToManyField(Product_Quantity, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    total = models.FloatField()

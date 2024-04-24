@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Client, Category, Product, Seller, Comment, Favorite, Cart
+from .models import ClientSellerRelation, Product_Quantity, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart
 import random
 import string
 
@@ -368,10 +368,14 @@ def delete_product(request, id):
 def look_clients(request):
     if request.user.is_authenticated and request.user.is_seller:
         employee = Seller.objects.get(user=request.user)
-        clients = Client.objects.filter(clientsellerrelation__seller=employee)
+        clients = ClientSellerRelation.objects.filter(seller=employee)
+
+        # Filtrar por los que no han sido entregados
+        clients = clients.filter(done_sale=False)
+
         return render(request, 'users/employee.html', {
             'employee': employee,
-            'clients': clients
+            'clients': clients,
         })
     else:
         return render(request, 'intro.html', {
@@ -500,6 +504,13 @@ def favorite_items(request):
     
 def cart(request):
     if request.user.is_authenticated:
+        try:
+            user = User.objects.get(pk=request.user.id)
+            code_seller = ClientSellerRelation.objects.filter(client=Client.objects.get(user=user)).first()
+            code_seller = code_seller.seller.code_seller
+        except:
+            code_seller = ""
+        
         user = User.objects.get(pk=request.user.id)
         try:
             cart = Cart.objects.filter(user=user)
@@ -510,13 +521,14 @@ def cart(request):
         total = 0
         try:
             for c in cart:
-                total += c.product.price
+                total += c.product.price * c.quantity
         except:
             total = 0
 
         return render(request, 'users/cart.html', {
             'cart': cart,
-            'total': total
+            'total': total,
+            'code_seller': code_seller
         })
     else:
         return render(request, 'intro.html', {
@@ -531,9 +543,18 @@ def add_to_cart(request, product_id):
             quantity = 1
             cart = Cart(user=user, product=product, quantity=quantity)
             cart.save()
+
+            try:
+                user = User.objects.get(pk=request.user.id)
+                code_seller = ClientSellerRelation.objects.filter(client=Client.objects.get(user=user)).first()
+                code_seller = code_seller.seller.code_seller
+            except:
+                code_seller = ""
+
             return render(request, 'users/cart.html', {
                 'success': 'Producto añadido al carrito',
-                'cart': Cart.objects.filter(user=user)
+                'cart': Cart.objects.filter(user=user),
+                'code_seller': code_seller
             })
     else:
         return render(request, 'intro.html', {
@@ -544,17 +565,25 @@ def delete_cart(request, product_id):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
         try:
+            user = User.objects.get(pk=request.user.id)
+            code_seller = ClientSellerRelation.objects.filter(client=Client.objects.get(user=user)).first()
+            code_seller = code_seller.seller.code_seller
+        except:
+            code_seller = ""
+        try:
             cart = Cart.objects.get(pk=product_id)
             cart.delete()
 
             return render(request, 'users/cart.html', {
                 'success': 'Producto eliminado del carrito',
-                'cart': Cart.objects.filter(user=user)
+                'cart': Cart.objects.filter(user=user),
+                'code_seller': code_seller
             })
         except:
             return render(request, 'users/cart.html', {
                 'error': 'El producto no está en el carrito',
-                'cart': Cart.objects.filter(user=user)
+                'cart': Cart.objects.filter(user=user),
+                'code_seller': code_seller
             })
     else:
         return render(request, 'intro.html', {
@@ -568,9 +597,23 @@ def add_one_product(request, product_id):
         cart.quantity += 1
         cart.save()
 
+        try:
+            cart = Cart.objects.filter(user=user)
+        except:
+            cart = None
+
+        # Calcular el total
+        total = 0
+        try:
+            for c in cart:
+                total += c.product.price * c.quantity
+        except:
+            total = 0
+
         return render(request, 'users/cart.html', {
             'success': 'Producto añadido al carrito',
-            'cart': Cart.objects.filter(user=user)
+            'cart': Cart.objects.filter(user=user),
+            'total': total
         })
     else:
         return render(request, 'intro.html', {
@@ -585,16 +628,111 @@ def remove_one_product(request, product_id):
             cart.quantity -= 1
             cart.save()
 
+            try:
+                cart = Cart.objects.filter(user=user)
+            except:
+                cart = None
+
+            # Calcular el total
+            total = 0
+            try:
+                for c in cart:
+                    total += c.product.price * c.quantity
+            except:
+                total = 0
+
             return render(request, 'users/cart.html', {
                 'success': 'Producto eliminado del carrito',
-                'cart': Cart.objects.filter(user=user)
+                'cart': Cart.objects.filter(user=user),
+                'total': total
             })
         else:
             cart.delete()
+            try:
+                cart = Cart.objects.filter(user=user)
+            except:
+                cart = None
+
+            # Calcular el total
+            total = 0
+            try:
+                for c in cart:
+                    total += c.product.price * c.quantity
+            except:
+                total = 0
+                
             return render(request, 'users/cart.html', {
                 'success': 'Producto eliminado del carrito',
-                'cart': Cart.objects.filter(user=user)
+                'cart': Cart.objects.filter(user=user),
+                'total': total
             })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión para acceder a esta página'
+        })
+    
+def complete_buy(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.id)
+        cart = Cart.objects.filter(user=user)
+        
+        if request.method == 'POST':
+            if not cart:
+                return render(request, 'intro.html', {
+                    'error': 'No tienes productos en el carrito'
+                })
+            
+            user_buyer = request.POST.get('user_buyer')
+            is_delivery = request.POST.get('is_delivery')
+            print(is_delivery)
+            if is_delivery == None:
+                is_delivery = False
+            else:
+                is_delivery = True
+
+            if user_buyer == "":
+                sellers = Seller.objects.all()
+                relation = None
+                for s in sellers:
+                    if not relation:
+                        relation = ClientSellerRelation.objects.filter(seller=s).count()
+                        seller = s
+                    else:
+                        if ClientSellerRelation.objects.filter(seller=s).count() < relation:
+                            relation = ClientSellerRelation.objects.filter(seller=s).count()
+                            seller = s
+            else:
+                seller = Seller.objects.get(code_seller=user_buyer)
+
+            # Crear la venta
+            total = 0
+            for c in cart:
+                total += c.product.price * c.quantity
+            sale = Sale(client=user, total=total)
+            sale.save()
+
+            # Agregar los productos y su cantidad
+            for c in cart:
+                product_quantity = Product_Quantity(product=c.product, quantity=c.quantity)
+                product_quantity.save()
+                sale.Product_Quantity.add(product_quantity)
+                sale.save()
+
+            # Eliminar el carrito
+            cart.delete()
+
+            # Crear la relación de venta
+            client = Client.objects.get(user=user)
+            relation = ClientSellerRelation(client=client, seller=seller, is_delivered=is_delivery, total=total)
+            relation.save()
+
+            for p in sale.Product_Quantity.all():
+                relation.Product_Quantity.add(p)
+                relation.save()
+
+        return render(request, 'intro.html', {
+            'success': 'Compra realizada correctamente'
+        })
     else:
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión para acceder a esta página'

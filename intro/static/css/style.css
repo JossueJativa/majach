@@ -670,6 +670,20 @@ a{
     border-radius: 50px;
 }
 
+.btn-cancel {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #030637;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
 .btn-back {
     width: 100%;
     height: auto;
@@ -779,7 +793,7 @@ input[type="radio"]:checked+label {
 }
 
 .input-quantity {
-    width: 100%;
+    width: 90%;
     height: auto;
     display: flex;
     flex-direction: row;
@@ -800,6 +814,38 @@ input[type="radio"]:checked+label {
     cursor: pointer;
     font-size: 1.5rem;
     border-radius: 10px;
+}
+
+.img-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.responsive-text {
+    display: block;
+}
+
+.responsive-blanc {
+    color: #fff;
+}
+
+.table-color-blue {
+    background-color: #073F74 !important;
+    color: #ffffff !important;
+}
+
+.text-information-seller {
+    color: #ffffff;
+    font-size: 0.6rem;
+}
+
+.text-delivery {
+    color: #ffffff;
+    font-size: 0.8rem;
 }
 
 /* Pantallas pequeñas (celulares) */
@@ -987,6 +1033,14 @@ input[type="radio"]:checked+label {
     .add-minus-price-btn {
         font-size: 1rem;
         margin: 0 5px;
+    }
+
+    .responsive-text {
+        display: none;
+    }
+
+    .responsive-blanc {
+        color: #000;
     }
 }
 

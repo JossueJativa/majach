@@ -47,25 +47,48 @@
             </button>
         </div>
     </div>
-    <h3>Empleados en lista</h3>
+    <h3>Lista de compradores</h3>
     <table class="table table-bordered border-dark">
         <thead>
             <tr>
                 <th scope="col" style="background-color: #466475;" data-section="employee" data-value="username"></th>
                 <th scope="col" style="background-color: #466475;" data-section="employee" data-value="email"></th>
                 <th scope="col" style="background-color: #466475;" data-section="employee" data-value="phone"></th>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="see_products"></th>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="price"></th>
+                <th scope="col" style="background-color: #466475;" data-section="employee" data-value="mark_done"></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                {% for client in clients %}
-                    <tr>
-                        <td>{{ client.user.username }}</td>
-                        <td>{{ client.user.email }}</td>
-                        <td>{{ client.user.phone }}</td>
-                    </tr>
-                {% endfor %}
-            </tr>
+            {% for client in clients %}
+                <tr>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        {{ client.client.user.username }}
+                    </td>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        {{ client.client.user.email }}
+                    </td>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        {{ client.client.user.phone }}
+                    </td>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        {% for products in client.Product_Quantity.all %}
+                            {{ products.product.name }}: {{ products.quantity }}<br>
+                        {% endfor %}
+                    </td>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        $ {{ client.total }}
+                    </td>
+                    <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
+                        <form action="" method="post">
+                            <button type="submit" class="btn-buyproduct margin-bottom" data-section="cart" data-value="done"></button>
+                        </form>
+                        <form action="" method="post">
+                            <button type="submit" class="btn-cancel" data-section="cart" data-value="not-done"></button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

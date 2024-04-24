@@ -61,7 +61,10 @@
         "username": "Usuario",
         "email": "Correo",
         "phone": "Celular",
-        "code": "Código: "
+        "code": "Código: ",
+        "see_products": "Ver productos",
+        "mark_done": "Marcar entrega",
+        "price": "Precio"
     },
     "item": {
         "qualification": "Calificacion",
@@ -80,6 +83,13 @@
     "cart": {
         "buy": "Comprar productos",
         "back": "Volver a la tienda",
-        "cart": "Carrito de compras"
+        "cart": "Carrito de compras",
+        "total": "Total a pagar",
+        "ingrese": "Ingresar comprador",
+        "delivery": "¿Quieres que te lo entreguemos?",
+        "extra-delivery": "Costo de envio se hablara con el empleado",
+        "info": "Si no pone un codigo de comprador, se le asignara un comprador por defecto",
+        "done": "Entregado",
+        "not-done": "Cancelado"
     }
 }
