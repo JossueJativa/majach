@@ -848,6 +848,14 @@ input[type="radio"]:checked+label {
     font-size: 0.8rem;
 }
 
+.box-forgot {
+    border: 1px solid #333;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
 /* Pantallas pequeñas (celulares) */
 @media (max-width: 765px) {
     .me-2 {

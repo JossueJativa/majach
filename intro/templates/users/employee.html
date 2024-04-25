@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for client in clients %}
+            {% for client in entity %}
                 <tr>
                     <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
                         {{ client.client.user.username }}
@@ -80,10 +80,12 @@
                         $ {{ client.total }}
                     </td>
                     <td {% if not client.done_sale %} style="background-color: rgb(221, 84, 84);" {% endif %}>
-                        <form action="" method="post">
+                        <form action="{% url 'intro:accept_sale' client.id 'entregado' %}" method="post">
+                            {% csrf_token %}
                             <button type="submit" class="btn-buyproduct margin-bottom" data-section="cart" data-value="done"></button>
                         </form>
-                        <form action="" method="post">
+                        <form action="{% url 'intro:accept_sale' client.id 'rechazado' %}" method="post">
+                            {% csrf_token %}
                             <button type="submit" class="btn-cancel" data-section="cart" data-value="not-done"></button>
                         </form>
                     </td>
@@ -91,5 +93,9 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+
+<div>
+    {% include 'paginator.html' %}
 </div>
 {% endblock %}

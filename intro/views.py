@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 
 from .models import ClientSellerRelation, Product_Quantity, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart
+from django.core.mail import send_mail
+from django.conf import settings
 import random
 import string
 
@@ -371,11 +373,21 @@ def look_clients(request):
         clients = ClientSellerRelation.objects.filter(seller=employee)
 
         # Filtrar por los que no han sido entregados
-        clients = clients.filter(done_sale=False)
+        # clients = clients.filter(done_sale=False)
+
+        # paginator
+        page = request.GET.get('page', 1)
+        try:
+            paginator = Paginator(clients, 10)
+            clients = paginator.page(page)
+        except:
+            paginator = Paginator(clients, 1)
+            clients = paginator.page(1)
 
         return render(request, 'users/employee.html', {
             'employee': employee,
-            'clients': clients,
+            'entity': clients,
+            'paginator': paginator
         })
     else:
         return render(request, 'intro.html', {
@@ -737,3 +749,93 @@ def complete_buy(request):
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión para acceder a esta página'
         })
+    
+def accept_sale(request, id, text):
+    if request.user.is_authenticated and request.user.is_seller:
+        # paginador
+        page = request.GET.get('page', 1)
+        try:
+            paginator = Paginator(ClientSellerRelation.objects.filter(seller=Seller.objects.get(user=request.user), done_sale=False), 10)
+            entity = paginator.page(page)
+        except:
+            paginator = Paginator(ClientSellerRelation.objects.filter(seller=Seller.objects.get(user=request.user), done_sale=False), 1)
+            entity = paginator.page(1)
+        if (text == "entregado"):
+            relation = ClientSellerRelation.objects.get(pk=id)
+            relation.done_sale = True
+            relation.save()
+
+            # bajar el stock
+            for p in relation.Product_Quantity.all():
+                product = Product.objects.get(pk=p.product.id)
+                product.stock -= p.quantity
+                product.save()
+
+            return render(request, 'users/employee.html', {
+                'success': 'Venta aceptada correctamente',
+                'entity': entity,
+                'paginator': paginator
+            })
+
+        elif (text == "rechazado"):
+            relation = ClientSellerRelation.objects.get(pk=id)
+            relation.delete()
+
+            return render(request, 'users/employee.html', {
+                'success': 'Venta rechazada correctamente',
+                'entity': entity,
+                'paginator': paginator
+            })
+        else:
+            return render(request, 'intro.html', {
+                'error': 'No puedes acceder a esta página'
+            })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión como empleado para acceder a esta página'
+        })
+    
+def forgot_username(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # Enviar por correo el nombre de usuario
+            subject = 'Recuperación de nombre de usuario'
+            message = f'Su nombre de usuario es: {user.username}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, email_from, recipient_list)
+            return render(request, 'forgot_username.html', {
+                'success': 'Se ha enviado un correo con el nombre de usuario'
+            })
+        except:
+            return render(request, 'forgot_username.html', {
+                'error': 'El correo no está registrado'
+            })
+    return render(request, 'forgot_username.html')
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            user.set_password(password)
+            user.save()
+
+            # Enviar correo
+            subject = 'Recuperación de contraseña'
+            message = f'Su nueva contraseña es: {password}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, email_from, recipient_list)
+
+            return render(request, 'forgot_password.html', {
+                'success': 'Se ha enviado un correo con la nueva contraseña'
+            })
+        except:
+            return render(request, 'forgot_password.html', {
+                'error': 'El correo no está registrado'
+            })
+    return render(request, 'forgot_password.html')

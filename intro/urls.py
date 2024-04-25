@@ -27,4 +27,7 @@ urlpatterns = [
     path('add_one_product/<int:product_id>/', views.add_one_product, name='add_one_product'),
     path('remove_one_product/<int:product_id>/', views.remove_one_product, name='remove_one_product'),
     path('complete_buy/', views.complete_buy, name='complete_buy'),
+    path('accept_sale/<int:id>/<str:text>/', views.accept_sale, name='accept_sale'),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
+    path('forgot_username/', views.forgot_username, name='forgot_username'),
 ]

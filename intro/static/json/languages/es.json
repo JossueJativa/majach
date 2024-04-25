@@ -1,8 +1,10 @@
 {
     "layout": {
         "login": "Iniciar sesión",
-        "forgot-username": "¿Olvidaste tu usuario? <a href=''>Recuperar usuario</a>",
-        "forgot-password": "¿Olvidaste tu contraseña? <a href=''>Recuperar contraseña</a>",
+        "forgot-username": "¿Olvidaste tu usuario?",
+        "forgot-password": "¿Olvidaste tu contraseña?",
+        "link-username": "Recuperar usuario",
+        "link-password": "Recuperar contraseña",
         "register": "¿Tienes cuenta?",
         "registrate": "Registrate ahora",
         "password": "Contraseña:",
@@ -91,5 +93,11 @@
         "info": "Si no pone un codigo de comprador, se le asignara un comprador por defecto",
         "done": "Entregado",
         "not-done": "Cancelado"
+    },
+    "forgot": {
+        "username": "Recuperar usuario",
+        "password": "Recuperar contraseña",
+        "forgot-username": "¿Olvidaste tu usuario?",
+        "forgot-password": "¿Olvidaste tu contraseña?"
     }
 }
