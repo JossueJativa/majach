@@ -86,10 +86,18 @@
                 </div>
             </div>
             <div class="col-6">
+                {% if product.stock > 0 %}
                 <form action="{% url 'intro:add_to_cart' product.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn-buyproduct"><span data-section="item" data-value="add-cart"></span></button>
                 </form>
+                {% else %}
+                <h6 data-section="item" data-value="no-stock"></h6>
+                <form action="{% url 'intro:add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-buyproduct" disabled><span data-section="item" data-value="add-cart"></span></button>
+                </form>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -181,6 +189,16 @@
         <div class="col-lg-9">
             <textarea class="textarea" name="comment" id="comment" readonly>{{ comment.comment }}</textarea>
         </div>
+        {% if user.is_admin %}
+        <div class="col-lg-9">
+            <form action="{% url 'intro:delete_comment' comment.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn-transparent" type="submit">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

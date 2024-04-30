@@ -63,7 +63,9 @@
                         <tr>
                             {% for product in products %}
                                 <tr>
-                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>{{ product.name }}</td>
+                                    <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>
+                                        <a href="{% url 'intro:product' product.id %}">{{ product.name }}</a>
+                                    </td>
                                     <td {% if product.stock <= 0 %} style="background-color: rgb(216, 65, 65);" {% endif %}>
                                         <a href="{{ product.photo.url }}" target="_blank">
                                             <img src="{{ product.photo.url }}" alt="{{ product.name }}" width="30">

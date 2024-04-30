@@ -722,6 +722,16 @@ a{
     border-radius: 50px;
 }
 
+.btn-transparent {
+    height: auto;
+    display: flex;
+    padding: 10px;
+    background-color: transparent;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+}
+
 input[type="radio"] {
     display: none;
 }

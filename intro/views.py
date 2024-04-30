@@ -438,7 +438,33 @@ def comment(request, product_id):
             'product': Product.objects.get(pk=product_id),
             'error': 'Debes iniciar sesión para acceder a esta página',
             'comments': comment
-        })        
+        })   
+
+def delete_comment(request, comment_id):
+    if request.method  == 'POST':
+        comment = Comment.objects.get(pk=comment_id)
+        product = Product.objects.get(comments=comment)
+        comment.delete()
+
+        # Sacar una media de las estrellas
+        stars = 0
+        for c in product.comments.all():
+            stars += c.stars
+
+        star = stars / product.comments.count()
+        # Quitar los decimales
+        star = int(star)
+
+        # Ordenar de mas estrellas a menos estrellas
+        comment = product.comments.all().order_by('-stars')
+
+        return render(request, 'item.html', {
+            'product': product,
+            'success': 'Comentario eliminado correctamente',
+            'comments': comment,
+            'star': star
+        })
+
     
 def set_favorite_item(request, product_id):
     if request.user.is_authenticated:
@@ -552,9 +578,23 @@ def add_to_cart(request, product_id):
         if request.method == 'POST':
             user = User.objects.get(pk=request.user.id)
             product = Product.objects.get(pk=product_id)
-            quantity = 1
-            cart = Cart(user=user, product=product, quantity=quantity)
-            cart.save()
+
+            # Verificar si el producto ya está en el carrito
+            try:
+                cart = Cart.objects.get(user=user, product=product)
+                if cart.quantity >= cart.product.stock:
+                    cart.quantity = cart.product.stock
+                    cart.save()
+                    return render(request, 'users/cart.html', {
+                        'error': 'No hay más stock de este producto',
+                        'cart': Cart.objects.filter(user=user)
+                    })
+                else:
+                    cart.quantity += 1
+                    cart.save()
+            except:
+                cart = Cart(user=user, product=product, quantity=1)
+                cart.save()
 
             try:
                 user = User.objects.get(pk=request.user.id)
@@ -606,8 +646,15 @@ def add_one_product(request, product_id):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.id)
         cart = Cart.objects.get(pk=product_id)
+
+        # Añadir uno al producto
         cart.quantity += 1
         cart.save()
+
+        # Verificar si la cantidad del producto es menor o igual al stock
+        if cart.quantity >= cart.product.stock:
+            cart.quantity = cart.product.stock
+            cart.save()
 
         try:
             cart = Cart.objects.filter(user=user)
@@ -696,7 +743,6 @@ def complete_buy(request):
             
             user_buyer = request.POST.get('user_buyer')
             is_delivery = request.POST.get('is_delivery')
-            print(is_delivery)
             if is_delivery == None:
                 is_delivery = False
             else:
@@ -741,6 +787,13 @@ def complete_buy(request):
             for p in sale.Product_Quantity.all():
                 relation.Product_Quantity.add(p)
                 relation.save()
+
+            # Enviar correo al cliente
+            subject = 'Compra realizada'
+            message = f'Se ha realizado una compra por un total de {total}$ en la tienda, pronto se comunicara con usted el vendedor'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user.email]
+            send_mail(subject, message, email_from, recipient_list)
 
         return render(request, 'intro.html', {
             'success': 'Compra realizada correctamente'
@@ -854,9 +907,7 @@ def stadistics_admin(request):
 def search_view(request):
     if request.method == 'POST':
         search_query = request.POST.get('search')
-        print(search_query)
         products = Product.objects.filter(name__icontains=search_query)
-        print(products)
         paginator = Paginator(products, 40)  # 10 productos por página
 
         page_number = request.GET.get('page')
