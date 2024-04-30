@@ -57,14 +57,6 @@ a{
     color: black;
 }
 
-.input_search span {
-    position: absolute;
-    top: 50%;
-    left: 63%;
-    transform: translate(-63%, -50%);
-    color: #333;
-}
-
 .nav_logo{
     /* Logo circular */
     border-radius: 50%;
@@ -870,12 +862,6 @@ input[type="radio"]:checked+label {
         width: 80%;
     }
 
-    .input_search span {
-        left: 85% !important;
-        transform: translate(-90%, -55%) !important;
-        top: 30%;
-    }
-
     .principal_info h2 {
         left: 65%;
         font-size: 1.1rem;
@@ -1064,12 +1050,6 @@ input[type="radio"]:checked+label {
 
     .login_button {
         width: 30vh;
-    }
-
-    .input_search span {
-        left: 95% !important;
-        transform: translate(-95%, -55%) !important;
-        top: 35%;
     }
 
     .register_view {

@@ -20,14 +20,12 @@
             <a class="navbar-brand" href="{% url 'intro:intro' %}">
                 <img class="nav_logo" src="{% static 'img/Logo majach.jpg' %}" alt="Home" width="100">
             </a>
-            <form class="d-flex" role="search">
-                <div class="container input_search">
+            <form action="{% url 'intro:search' %}" class="d-flex" method="post">
+                {% csrf_token %}
+                <div class="container">
                     <div class="row">
                         <div class="col">
-                            <input class="form-control me-2" type="search" aria-label="Search">
-                            <span class="material-symbols-outlined">
-                                search
-                            </span>
+                            <input class="form-control me-2" type="search" name="search" aria-label="Search" placeholder="&#x1F50D; Search">
                         </div>
                     </div>
                 </div>
@@ -49,7 +47,7 @@
                             </a>
                         {% else %}
                             {% if user.is_admin %}
-                                <a type="button" href="#" class="circular_btn">
+                                <a type="button" href="{% url 'intro:stadistics_admin' %}" class="circular_btn">
                                     <img src="{% static 'img/grafico-circular-freepik.png' %}" alt="Favoritos" width="100">
                                 </a>
                                 <a type="button" href="{% url 'intro:admin_view' %}" class="circular_btn">

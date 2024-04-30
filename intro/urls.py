@@ -30,4 +30,6 @@ urlpatterns = [
     path('accept_sale/<int:id>/<str:text>/', views.accept_sale, name='accept_sale'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('forgot_username/', views.forgot_username, name='forgot_username'),
+    path('stadistics_admin/', views.stadistics_admin, name='stadistics_admin'),
+    path('search/', views.search_view, name='search')
 ]

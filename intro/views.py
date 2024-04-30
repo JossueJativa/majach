@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ClientSellerRelation, Product_Quantity, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart
 from django.core.mail import send_mail
@@ -773,7 +773,7 @@ def accept_sale(request, id, text):
 
             return render(request, 'users/employee.html', {
                 'success': 'Venta aceptada correctamente',
-                'entity': entity,
+                'entity': relation,
                 'paginator': paginator
             })
 
@@ -839,3 +839,38 @@ def forgot_password(request):
                 'error': 'El correo no está registrado'
             })
     return render(request, 'forgot_password.html')
+
+def stadistics_admin(request):
+    if request.user.is_authenticated and request.user.is_admin:
+        # Ventas totales
+        return render(request, 'users/stadistics_admin.html', {
+            
+        })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión como administrador para acceder a esta página'
+        })
+    
+def search_view(request):
+    if request.method == 'POST':
+        search_query = request.POST.get('search')
+        print(search_query)
+        products = Product.objects.filter(name__icontains=search_query)
+        print(products)
+        paginator = Paginator(products, 40)  # 10 productos por página
+
+        page_number = request.GET.get('page')
+        try:
+            products_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            # Si el número de página no es un entero, mostrar la primera página.
+            products_page = paginator.page(1)
+        except EmptyPage:
+            # Si la página está fuera de rango, mostrar la última página de resultados.
+            products_page = paginator.page(paginator.num_pages)
+
+        return render(request, 'search.html', {
+            'entity': products_page,
+            'namesearch': search_query
+        })
+    return render(request, 'search.html')

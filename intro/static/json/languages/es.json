@@ -77,7 +77,8 @@
         "comment": "Comentarios"
     },
     "category": {
-        "products": "Productos de la categoria"
+        "products": "Productos de la categoria",
+        "products-search": "Productos encontrados"
     },
     "favorite": {
         "favorite": "Favoritos"

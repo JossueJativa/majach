@@ -4,32 +4,38 @@
 {% block title %} Home Majach {% endblock %}
 
 {% block body %}
-<h2  data-section="favorite" data-value="favorite"></h2>
+<h2><span data-section="category" data-value="products-search"></span><span>{{ namesearch }}</span></h2>
 <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-        {% for favorite in favorites %}
+        {% for product in entity %}
+        {% if product.stock > 0 %}
         <div class="conatiner-ineer">
-            <a href="{% url 'intro:product' favorite.product.id %}" class="col box-product">
+            <a href="{% url 'intro:product' product.id %}" class="col box-product">
                 <div class="row row-cols-1">
                     <div class="container text-center">
                         <div class="col">
                             <div class="box-items">
-                                <img src="{{ favorite.product.photo.url }}" alt="{{ product.name }}" width="100">
+                                <img src="{{ product.photo.url }}" alt="{{ product.name }}" width="100">
                             </div>
                         </div>
                         <div class="col">
-                            <h3 class="cl-black">{{ favorite.product.name }}</h3>
+                            <h3 class="cl-black">{{ product.name }}</h3>
                         </div>
                         <div class="col">
                             <div class="button-class">
-                                <button class="item-cash">${{ favorite.product.price | floatformat:2 }}</button>
+                                <button class="item-cash">${{ product.price | floatformat:2 }}</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
+</div>
+
+<div>
+    {% include 'paginator.html' %}
 </div>
 {% endblock %}
