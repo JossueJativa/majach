@@ -746,8 +746,10 @@ def complete_buy(request):
                 if c.quantity > c.product.stock:
                     # Reducir la cantidad al stock
                     c.quantity = c.product.stock
-                    return render(request, 'intro.html', {
-                        'error': f'Solo hay {c.product.stock} unidades de {c.product.name} en stock'
+                    c.save()
+                    return render(request, 'users/cart.html', {
+                        'error': f'Solo hay {c.product.stock} unidades de {c.product.name} en stock',
+                        'cart': Cart.objects.filter(user=user)
                     })
             
             user_buyer = request.POST.get('user_buyer')
