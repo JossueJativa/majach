@@ -741,6 +741,15 @@ def complete_buy(request):
                     'error': 'No tienes productos en el carrito'
                 })
             
+            # Comprobar si aun hay stock en los productos
+            for c in cart:
+                if c.quantity > c.product.stock:
+                    # Reducir la cantidad al stock
+                    c.quantity = c.product.stock
+                    return render(request, 'intro.html', {
+                        'error': f'Solo hay {c.product.stock} unidades de {c.product.name} en stock'
+                    })
+            
             user_buyer = request.POST.get('user_buyer')
             is_delivery = request.POST.get('is_delivery')
             if is_delivery == None:
