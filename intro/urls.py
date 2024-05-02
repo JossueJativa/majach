@@ -32,5 +32,9 @@ urlpatterns = [
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('forgot_username/', views.forgot_username, name='forgot_username'),
     path('stadistics_admin/', views.stadistics_admin, name='stadistics_admin'),
+    path('get_products/', views.get_products, name='get_products'),
+    path('get_favorite/', views.get_favorite, name='get_favorite'),
+    path('get_sellers/', views.get_sellers, name='get_sellers'),
+    path('get_products_cart/', views.get_products_cart, name='get_products_cart'),
     path('search/', views.search_view, name='search')
 ]

@@ -5,4 +5,29 @@
 
 {% block body %}
 
+{{ products_sale }}
+<div class="container text-center">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2">
+        <div class="col">
+            <h2 data-section="analitic" data-value="sellests"></h2>
+            <div id="chart1" class="chart"> 
+            </div>
+        </div>
+        <div class="col">
+            <h2 data-section="analitic" data-value="favorites"></h2>
+            <div id="chart2" class="chart">
+            </div>
+        </div>
+        <div class="col">
+            <h2 data-section="analitic" data-value="sellers"></h2>
+            <div id="chart3" class="chart">
+            </div>
+        </div>
+        <div class="col">
+            <h2 data-section="analitic" data-value="cart"></h2>
+            <div id="chart4" class="chart">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -858,6 +858,11 @@ input[type="radio"]:checked+label {
     background-color: #fff;
 }
 
+.chart {
+    width: 100%; /* Por defecto, ocupará todo el ancho del contenedor */
+    height: 300px; /* Altura fija */
+}
+
 /* Pantallas pequeñas (celulares) */
 @media (max-width: 765px) {
     .me-2 {
@@ -1045,6 +1050,10 @@ input[type="radio"]:checked+label {
 
     .responsive-blanc {
         color: #000;
+    }
+
+    .chart {
+        height: 350px;
     }
 }
 

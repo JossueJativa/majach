@@ -101,5 +101,11 @@
         "password": "Recuperar contraseña",
         "forgot-username": "¿Olvidaste tu usuario?",
         "forgot-password": "¿Olvidaste tu contraseña?"
+    },
+    "analitic": {
+        "sellests": "Productos mas vendidos",
+        "favorites": "Productos favoritos",
+        "sellers": "Vendedores mas activos",
+        "cart": "Productos en carrito"
     }
 }

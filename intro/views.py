@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -904,17 +904,6 @@ def forgot_password(request):
             })
     return render(request, 'forgot_password.html')
 
-def stadistics_admin(request):
-    if request.user.is_authenticated and request.user.is_admin:
-        # Ventas totales
-        return render(request, 'users/stadistics_admin.html', {
-            
-        })
-    else:
-        return render(request, 'intro.html', {
-            'error': 'Debes iniciar sesión como administrador para acceder a esta página'
-        })
-    
 def search_view(request):
     if request.method == 'POST':
         search_query = request.POST.get('search')
@@ -925,10 +914,8 @@ def search_view(request):
         try:
             products_page = paginator.page(page_number)
         except PageNotAnInteger:
-            # Si el número de página no es un entero, mostrar la primera página.
             products_page = paginator.page(1)
         except EmptyPage:
-            # Si la página está fuera de rango, mostrar la última página de resultados.
             products_page = paginator.page(paginator.num_pages)
 
         return render(request, 'search.html', {
@@ -936,3 +923,227 @@ def search_view(request):
             'namesearch': search_query
         })
     return render(request, 'search.html')
+
+def stadistics_admin(request):
+    if request.user.is_authenticated and request.user.is_admin:
+        # Ver los productos más vendidos
+        try:
+            products = Product.objects.all()
+            products_sale = {}
+            for p in products:
+                products_sale[p.name] = 0
+                for s in Sale.objects.all():
+                    for q in s.Product_Quantity.all():
+                        if q.product == p:
+                            products_sale[p.name] += q.quantity
+        except:
+            products_sale = {}
+
+
+
+        # Ordenar de mayor a menor
+        products_sale = dict(sorted(products_sale.items(), key=lambda item: item[1], reverse=True))
+        return render(request, 'users/stadistics_admin.html', {
+            'products': products_sale
+        })
+    else:
+        return render(request, 'intro.html', {
+            'error': 'Debes iniciar sesión como administrador para acceder a esta página'
+        })
+    
+def get_products(request):
+    chart = {
+        'tooltip': {
+            'trigger': 'item',
+        },
+        'legend': {
+            'orient': 'vertical',
+            'left': 'left',
+        },
+    }
+    try:
+        products = Product.objects.all()
+        products_sale = {}
+        for p in products:
+            products_sale[p.name] = 0
+            for s in Sale.objects.all():
+                for q in s.Product_Quantity.all():
+                    if q.product == p:
+                        products_sale[p.name] += q.quantity
+    except:
+        products_sale = {}
+
+    chart['series'] = [{
+        'data': [],
+        'name': 'Estadistica de mayores ventas',
+        'type': 'pie',
+        'radius': '50%',
+        'emphasis': {
+            'itemStyle': {
+                'shadowBlur': 10,
+                'shadowOffsetX': 0,
+                'shadowColor': 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    # Lista de productos con su nombre
+    names = list(products_sale.keys())
+    quantity = list(products_sale.values())
+
+    for i in range(len(names)):
+        if quantity[i] > 0:
+            chart['series'][0]['data'].append({
+                'value': quantity[i],
+                'name': names[i]
+            })
+
+    # Ordenar de mayor a menor
+    products_sale = dict(sorted(products_sale.items(), key=lambda item: item[1], reverse=True))
+    return JsonResponse(chart)
+
+def get_favorite(request):
+    chart = {
+        'tooltip': {
+            'trigger': 'item',
+        },
+        'legend': {
+            'orient': 'vertical',
+            'left': 'left',
+        },
+    }
+    try:
+        products = Product.objects.all()
+        products_favorite = {}
+        for p in products:
+            products_favorite[p.name] = 0
+            for f in Favorite.objects.all():
+                if f.product == p:
+                    products_favorite[p.name] += 1
+    except:
+        products_favorite = {}
+
+    chart['series'] = [{
+        'data': [],
+        'name': 'Estadistica de favoritos',
+        'type': 'pie',
+        'radius': '50%',
+        'emphasis': {
+            'itemStyle': {
+                'shadowBlur': 10,
+                'shadowOffsetX': 0,
+                'shadowColor': 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    # Lista de productos con su nombre
+    names = list(products_favorite.keys())
+    quantity = list(products_favorite.values())
+
+    for i in range(len(names)):
+        if quantity[i] > 0:
+            chart['series'][0]['data'].append({
+                'value': quantity[i],
+                'name': names[i]
+            })
+
+    # Ordenar de mayor a menor
+    products_favorite = dict(sorted(products_favorite.items(), key=lambda item: item[1], reverse=True))
+    return JsonResponse(chart)
+
+def get_sellers(request):
+    chart = {
+        'tooltip': {
+            'trigger': 'item',
+        },
+        'legend': {
+            'orient': 'vertical',
+            'left': 'left',
+        },
+    }
+    try:
+        sellers = Seller.objects.all()
+        sellers_sale = {}
+        for s in sellers:
+            sellers_sale[s.user.username] = 0
+            for r in ClientSellerRelation.objects.all():
+                if r.seller == s:
+                    sellers_sale[s.user.username] += 1
+    except:
+        sellers_sale = {}
+
+    chart['series'] = [{
+        'data': [],
+        'name': 'Estadistica de ventas por empleado',
+        'type': 'pie',
+        'radius': '50%',
+        'emphasis': {
+            'itemStyle': {
+                'shadowBlur': 10,
+                'shadowOffsetX': 0,
+                'shadowColor': 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    # Lista de productos con su nombre
+    names = list(sellers_sale.keys())
+    quantity = list(sellers_sale.values())
+
+    for i in range(len(names)):
+        if quantity[i] > 0:
+            chart['series'][0]['data'].append({
+                'value': quantity[i],
+                'name': names[i]
+            })
+
+    # Ordenar de mayor a menor
+    sellers_sale = dict(sorted(sellers_sale.items(), key=lambda item: item[1], reverse=True))
+    return JsonResponse(chart)
+
+def get_products_cart(request):
+    chart = {
+        'tooltip': {
+            'trigger': 'item',
+        },
+        'legend': {
+            'orient': 'vertical',
+            'left': 'left',
+        },
+    }
+    try:
+        products = Product.objects.all()
+        products_cart = {}
+        for p in products:
+            products_cart[p.name] = 0
+            for c in Cart.objects.all():
+                if c.product == p:
+                    products_cart[p.name] += c.quantity
+    except:
+        products_cart = {}
+
+    chart['series'] = [{
+        'data': [],
+        'name': 'Estadistica de productos en carrito',
+        'type': 'pie',
+        'radius': '50%',
+        'emphasis': {
+            'itemStyle': {
+                'shadowBlur': 10,
+                'shadowOffsetX': 0,
+                'shadowColor': 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    # Lista de productos con su nombre
+    names = list(products_cart.keys())
+    quantity = list(products_cart.values())
+
+    for i in range(len(names)):
+        if quantity[i] > 0:
+            chart['series'][0]['data'].append({
+                'value': quantity[i],
+                'name': names[i]
+            })
+
+    # Ordenar de mayor a menor
+    products_cart = dict(sorted(products_cart.items(), key=lambda item: item[1], reverse=True))
+    return JsonResponse(chart)
