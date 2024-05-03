@@ -1099,6 +1099,10 @@ input[type="radio"]:checked+label {
         justify-content: flex-end;
     }
 
+    #sidebar ul {
+        margin-top: 80%;
+    }
+
     .full-screen-responsive {
         width: 100%;
         height: auto;
