@@ -1,8 +1,9 @@
+import datetime
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, JsonResponse
-from django.urls import reverse
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.timezone import make_aware
 
 from .models import ClientSellerRelation, Product_Quantity, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart
 from django.core.mail import send_mail
@@ -371,11 +372,6 @@ def look_clients(request):
     if request.user.is_authenticated and request.user.is_seller:
         employee = Seller.objects.get(user=request.user)
         clients = ClientSellerRelation.objects.filter(seller=employee)
-
-        # Filtrar por los que no han sido entregados
-        # clients = clients.filter(done_sale=False)
-
-        # paginator
         page = request.GET.get('page', 1)
         try:
             paginator = Paginator(clients, 10)
@@ -408,16 +404,13 @@ def comment(request, product_id):
             product.comments.add(comment)
             product.save()
 
-            # Sacar una media de las estrellas
             stars = 0
             for c in product.comments.all():
                 stars += c.stars
 
             star = stars / product.comments.count()
-            # Quitar los decimales
             star = int(star)
 
-            # Ordenar de mas estrellas a menos estrellas
             comment = product.comments.all().order_by('-stars')
 
             return render(request, 'item.html', {
@@ -446,7 +439,6 @@ def delete_comment(request, comment_id):
         product = Product.objects.get(comments=comment)
         comment.delete()
 
-        # Sacar una media de las estrellas
         stars = 0
         for c in product.comments.all():
             stars += c.stars
@@ -926,32 +918,18 @@ def search_view(request):
 
 def stadistics_admin(request):
     if request.user.is_authenticated and request.user.is_admin:
-        # Ver los productos más vendidos
-        try:
-            products = Product.objects.all()
-            products_sale = {}
-            for p in products:
-                products_sale[p.name] = 0
-                for s in Sale.objects.all():
-                    for q in s.Product_Quantity.all():
-                        if q.product == p:
-                            products_sale[p.name] += q.quantity
-        except:
-            products_sale = {}
-
-
-
-        # Ordenar de mayor a menor
-        products_sale = dict(sorted(products_sale.items(), key=lambda item: item[1], reverse=True))
-        return render(request, 'users/stadistics_admin.html', {
-            'products': products_sale
-        })
+        return render(request, 'users/stadistics_admin.html')
     else:
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión como administrador para acceder a esta página'
         })
     
-def get_products(request):
+def get_products(request, start_date, end_date):
+    # Parse the date
+    start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    start_date_aware = make_aware(start_date)
+    end_date_aware = make_aware(end_date)
     chart = {
         'tooltip': {
             'trigger': 'item',
@@ -962,14 +940,15 @@ def get_products(request):
         },
     }
     try:
+        # Filtrar los productos mas vendidos por fecha
         products = Product.objects.all()
         products_sale = {}
         for p in products:
             products_sale[p.name] = 0
-            for s in Sale.objects.all():
-                for q in s.Product_Quantity.all():
-                    if q.product == p:
-                        products_sale[p.name] += q.quantity
+            for s in Sale.objects.filter(date__range=[start_date_aware, end_date_aware]):
+                for pq in s.Product_Quantity.all():
+                    if pq.product == p:
+                        products_sale[p.name] += pq.quantity
     except:
         products_sale = {}
 
@@ -999,6 +978,7 @@ def get_products(request):
 
     # Ordenar de mayor a menor
     products_sale = dict(sorted(products_sale.items(), key=lambda item: item[1], reverse=True))
+    print(products_sale)
     return JsonResponse(chart)
 
 def get_favorite(request):
@@ -1144,6 +1124,57 @@ def get_products_cart(request):
                 'name': names[i]
             })
 
-    # Ordenar de mayor a menor
     products_cart = dict(sorted(products_cart.items(), key=lambda item: item[1], reverse=True))
+    return JsonResponse(chart)
+
+def get_products_stars(request, start_date, end_date):
+    chart = {
+        'tooltip': {
+            'trigger': 'item',
+        },
+        'legend': {
+            'orient': 'vertical',
+            'left': 'left',
+        },
+    }
+    try:
+        products = Product.objects.all()
+        products_stars = {}
+        for p in products:
+            total_stars = 0
+            total_comments = 0
+            for c in p.comments.filter(date__range=[start_date, end_date]):
+                total_stars += c.stars
+                total_comments += 1
+            if total_comments > 0:
+                average_stars = total_stars / total_comments
+                # Normalizar las estrellas al rango de 0 a 5
+                normalized_stars = (average_stars / 5) * 5
+                products_stars[p.name] = normalized_stars
+    except Exception as e:
+        print(e)
+        products_stars = {}
+
+    chart['series'] = [{
+        'data': [],
+        'name': 'Estadistica de estrellas por producto',
+        'type': 'pie',
+        'radius': '50%',
+        'emphasis': {
+            'itemStyle': {
+                'shadowBlur': 10,
+                'shadowOffsetX': 0,
+                'shadowColor': 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    names = list(products_stars.keys())
+    normalized_stars = list(products_stars.values())
+
+    for i in range(len(names)):
+        chart['series'][0]['data'].append({
+            'value': normalized_stars[i],
+            'name': names[i]
+        })
+
     return JsonResponse(chart)
