@@ -1,0 +1,113 @@
+{
+    "layout": {
+        "login": "Iniciar sesión",
+        "forgot-username": "¿Olvidaste tu usuario?",
+        "forgot-password": "¿Olvidaste tu contraseña?",
+        "link-username": "Recuperar usuario",
+        "link-password": "Recuperar contraseña",
+        "register": "¿Tienes cuenta?",
+        "registrate": "Registrate ahora",
+        "password": "Contraseña:",
+        "username": "Usuario:",
+        "logout": "Cerrar sesión",
+        "show-more": "Ver más"
+    },
+    "register": {
+        "title": "Regista tu usuario",
+        "email": "Correo:",
+        "confirm-password": "Confirmar contraseña:",
+        "phone": "Celular:",
+        "register": "Registrar",
+        "tienda": "Ir a la tienda"
+    },
+    "admin": {
+        "add-product": "Agregar nuevos productos",
+        "add-personal": "Agregar nuevos empleados",
+        "add": "Agregar",
+        "name": "Nombre:",
+        "names": "Nombre/s:",
+        "last": "Apellido/s:",
+        "price": "Precio:",
+        "stock": "Stock:",
+        "description": "Descripción:",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "name-last": "Nombre/s y Apellido/s",
+        "add-a-product": "Agregar un producto",
+        "add-a-personal": "Agregar un empleado",
+        "category": "Categoría",
+        "select-category": "Selecciona una categoria",
+        "photo": "Foto:",
+        "save-product": "Guardar producto",
+        "save-personal": "Guardar personal",
+        "confirm": "Confirmar:",
+        "list-employee": "Lista de empleados",
+        "list-products": "Lista de productos",
+        "photo-product": "Foto",
+        "price-product": "Precio"
+    },
+    "personal-page": {
+        "edit-information": "Editar información",
+        "information": "Información personal",
+        "principal-streret": "Calle principal:",
+        "secondary-street": "Calle secundaria:",
+        "no-house": "Número de casa:",
+        "update-information": "Actualizar información",
+        "actual-password": "Contraseña actual:",
+        "new-password": "Nueva contraseña:",
+        "change-password": "Cambiar contraseña",
+        "favorite": "Articulos favoritos",
+        "cart": "Carrito de compras"
+    },
+    "employee": {
+        "username": "Usuario",
+        "email": "Correo",
+        "phone": "Celular",
+        "code": "Código: ",
+        "see_products": "Ver productos",
+        "mark_done": "Marcar entrega",
+        "price": "Precio"
+    },
+    "item": {
+        "qualification": "Calificacion",
+        "add-cart": "Agregar al carrito <span><i class='bi bi-cart'></i></span>",
+        "comment": "Comentar",
+        "no-stock": "No hay stock"
+    },
+    "comment": {
+        "comment": "Comentarios"
+    },
+    "category": {
+        "products": "Productos de la categoria",
+        "products-search": "Productos encontrados"
+    },
+    "favorite": {
+        "favorite": "Favoritos"
+    },
+    "cart": {
+        "buy": "Comprar productos",
+        "back": "Volver a la tienda",
+        "cart": "Carrito de compras",
+        "total": "Total a pagar",
+        "ingrese": "Ingresar comprador",
+        "delivery": "¿Quieres que te lo entreguemos?",
+        "extra-delivery": "Costo de envio se hablara con el empleado",
+        "info": "Si no pone un codigo de comprador, se le asignara un comprador por defecto",
+        "done": "Entregado",
+        "not-done": "Cancelado"
+    },
+    "forgot": {
+        "username": "Recuperar usuario",
+        "password": "Recuperar contraseña",
+        "forgot-username": "¿Olvidaste tu usuario?",
+        "forgot-password": "¿Olvidaste tu contraseña?"
+    },
+    "analitic": {
+        "sellests": "Productos mas vendidos",
+        "favorites": "Productos favoritos",
+        "sellers": "Vendedores mas activos",
+        "cart": "Productos en carrito",
+        "stars": "Productos con mas estrellas",
+        "filter_date": "Filtrar por fecha"
+    }
+}
