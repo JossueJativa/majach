@@ -107,6 +107,7 @@
         "favorites": "Productos favoritos",
         "sellers": "Vendedores mas activos",
         "cart": "Productos en carrito",
-        "stars": "Productos con mas estrellas"
+        "stars": "Productos con mas estrellas",
+        "filter_date": "Filtrar por fecha"
     }
 }

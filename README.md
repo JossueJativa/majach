@@ -95,3 +95,13 @@ Al mostrar el segundo icono, es donde nosotros llegamos a administrar los produc
 
 Y tambien se podra ingresar los vendedores que van a estar de responsables para la funcion de realizar la venta de forma exitosa
 <img src="./img_readme/Screenshot 2024-05-09 120038.png" alt="Imagen de administrador tuerca">
+
+Por ultimo en la parte de las estadisticas donde al inicio nos aparecera un formulario para filtrar informacion por fechas:
+<img src="./img_readme/Screenshot 2024-05-09 121204.png" alt="Imagen de estadisticas">
+Al poner alguna fecha se llenaran los campos con respecto a lo que necesitaremos comparar entre productos mas vendidos entre esas fechas, y productos con mas estrellas entre esas fechas
+
+> [!IMPORTANT]
+> Las filtraciones de informacion por fecha en la parte de productos con mas estrellas, se realiza por medio de los comentarios que hace las personas que tiene cuenta y quieren dar su opinion con estrellas en los comentarios de la aplicacion
+
+Al finalizar y poner las fechas con respecto a lo que queremos filtrar, se veran los graficos respectivos de que tiene mas estrellas y productos vendidos en esas etapas
+<img src="./img_readme/Screenshot 2024-05-09 121605.png" alt="Imagen con filtro de fechas">
