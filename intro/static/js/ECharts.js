@@ -7,7 +7,7 @@ filterButton.addEventListener('click', async () => {
         await initChart_products();
         await initChart_stars();
     } catch (error) {
-        alert(error.message);
+        throw new Error(error);
     }
 });
 
@@ -115,6 +115,5 @@ window.addEventListener('load', async () => {
         initChart_sellers(sellerData);
         initChart_cart(cartData);
     } catch (error) {
-        alert(error.message);
     }
 });
