@@ -87,21 +87,29 @@ De ahí nos podemos hacer `LOG OUT` e ingresar al link `http://127.0.0.1:8000/` 
 <img src="./img_readme/Screenshot 2024-05-09 115606.png" alt="Imagenes de Administracion" width="100%">
 Y de aquí los importantes son el primer y segundo icono, el tercero es para ver información sobre el administrador.
 
-# Iconos de administracion
+# Diseño de ingenieria
+
+### Administrador
 Al mostrar el segundo icono, es donde nosotros llegamos a administrar los productos que se quiera vender
 
 > [!NOTE]
-> Aqui se necesitara primero ingresar al superusuario para crear las categorias que pondremos para nuestros objetos
+> Aquí se necesitará primero ingresar al superusuario para crear las categorías que pondremos para nuestros objetos
 
-Y tambien se podra ingresar los vendedores que van a estar de responsables para la funcion de realizar la venta de forma exitosa
+Y también se podrá ingresar los vendedores que van a estar de responsables para la función de realizar la venta de forma exitosa
 <img src="./img_readme/Screenshot 2024-05-09 120038.png" alt="Imagen de administrador tuerca">
 
-Por ultimo en la parte de las estadisticas donde al inicio nos aparecera un formulario para filtrar informacion por fechas:
-<img src="./img_readme/Screenshot 2024-05-09 121204.png" alt="Imagen de estadisticas">
-Al poner alguna fecha se llenaran los campos con respecto a lo que necesitaremos comparar entre productos mas vendidos entre esas fechas, y productos con mas estrellas entre esas fechas
+Por último en la parte de las estadísticas donde al inicio nos aparecerá un formulario para filtrar información por fechas:
+<img src="./img_readme/Screenshot 2024-05-09 121204.png" alt="Imagen de estadísticas">
+Al poner alguna fecha se llenarán los campos con respecto a lo que necesitaremos comparar entre productos más vendidos entre esas fechas, y productos con más estrellas entre esas fechas
 
 > [!IMPORTANT]
-> Las filtraciones de informacion por fecha en la parte de productos con mas estrellas, se realiza por medio de los comentarios que hace las personas que tiene cuenta y quieren dar su opinion con estrellas en los comentarios de la aplicacion
+> Las filtraciones de información por fecha en la parte de productos con más estrellas, se realiza por medio de los comentarios que hace las personas que tiene cuenta y quieren dar su opinión con estrellas en los comentarios de la aplicación
 
-Al finalizar y poner las fechas con respecto a lo que queremos filtrar, se veran los graficos respectivos de que tiene mas estrellas y productos vendidos en esas etapas
+Al finalizar y poner las fechas con respecto a lo que queremos filtrar, se verán los gráficos respectivos de que tiene más estrellas y productos vendidos en esas etapas
 <img src="./img_readme/Screenshot 2024-05-09 121605.png" alt="Imagen con filtro de fechas">
+
+### Como funciona el administrador
+El administrador se centra en ver y categorizar cada producto, viendo nuestra tabla de datos en Entidad-Relación vemos como se categoriza cada información y como se une cada una de ellas, esta relación hará referencia siempre a como se venden las cosas, la relación entre clientes y vendedores, el carrito de compras que se tiene, y toda la información que se mostrara en forma gráfica para el administrador tiene relación con nuestras tablas
+<img src="./img_readme/Imagen1.png" width="100%" style="background-color:white" alt="Diagrama entidad relación">
+
+El administrador al tener la capacidad de ingresar de forma sencilla y simple los productos y realizar de manera sencilla el contrato de personal, se llega a ver como realiza acciones de ingreso de data para nuestro CORE de aplicación, y como este mismo puede eliminar comentarios o hacer acciones como comentar en los mismos artículos, podrá modificar las estadísticas a su gusto, **pero esto no llega a ser ético del todo** entonces esto es más para comprobar y manipular datos de forma sencilla
