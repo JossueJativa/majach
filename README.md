@@ -113,3 +113,6 @@ El administrador se centra en ver y categorizar cada producto, viendo nuestra ta
 <img src="./img_readme/Imagen1.png" width="100%" style="background-color:white" alt="Diagrama entidad relación">
 
 El administrador al tener la capacidad de ingresar de forma sencilla y simple los productos y realizar de manera sencilla el contrato de personal, se llega a ver como realiza acciones de ingreso de data para nuestro CORE de aplicación, y como este mismo puede eliminar comentarios o hacer acciones como comentar en los mismos artículos, podrá modificar las estadísticas a su gusto, **pero esto no llega a ser ético del todo** entonces esto es más para comprobar y manipular datos de forma sencilla
+
+De aqui podremos ver como se puede ingresar a la aplicacion por medio del diagrama de flujo, aqui se puede ver como se ingresa el administrador, el vendedor y el comprador mediante una verificacion de roles
+<img src="./img_readme/Imagen2.png" width="100%" style="background-color:white" alt="Diagrama de flujo">
