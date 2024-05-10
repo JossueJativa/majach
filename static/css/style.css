@@ -7,9 +7,10 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f9fa;
+    z-index: -100;
 }
 
-a{
+a {
     text-decoration: none !important;
 }
 
@@ -22,6 +23,14 @@ a{
     width: 80vh !important;
     background-color: #ffffff !important;
     color: black !important;
+}
+
+.cl-white {
+    color: #ffffff !important;
+}
+
+.cl-black {
+    color: #000000 !important;
 }
 
 .login_button {
@@ -48,15 +57,7 @@ a{
     color: black;
 }
 
-.input_search span {
-    position: absolute;
-    top: 50%;
-    left: 63%;
-    transform: translate(-63%, -50%);
-    color: #333;
-}
-
-.nav_logo{
+.nav_logo {
     /* Logo circular */
     border-radius: 50%;
     width: 50px;
@@ -75,7 +76,44 @@ a{
     justify-content: space-between;
     padding: 20px 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: -100;
+    z-index: 10;
+}
+
+#sidebar ul {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    list-style: none;
+    flex-wrap: wrap;
+    margin-top: 40%;
+    align-content: flex-start;
+    color: #ffffff;
+}
+
+#sidebar ul li {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding: 7px 0px;
+    cursor: pointer;
+}
+
+#sidebar ul a {
+    width: 80%;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#sidebar ul a:hover {
+    text-decoration: none;
+    background-color: #030637;
+    padding: 3%;
+    border-radius: 5px;
 }
 
 #body {
@@ -83,7 +121,7 @@ a{
     padding: 20px;
 }
 
-.login_logo{
+.login_logo {
     width: 100%;
     height: auto;
     display: flex;
@@ -91,7 +129,7 @@ a{
     align-items: center;
 }
 
-.login_logo img{
+.login_logo img {
     border-radius: 50%;
     box-shadow: 3px 3px 17px rgba(0, 0, 0, 0.8);
 }
@@ -113,8 +151,7 @@ a{
     padding: 20px 6px;
 }
 
-.form_login .input_info {
-    width: 100%;
+.input_info {
     height: auto;
     display: flex;
     flex-direction: row;
@@ -123,32 +160,76 @@ a{
     margin-bottom: 20px;
 }
 
-.form_login .input_info label {
+.input_info label {
     color: #333;
     font-weight: bold;
-    width: 25%;
 }
 
-.form_login .input_info input {
-    width: 80%;
+.input_info input {
+    width: 120%;
     height: 40px;
     border-radius: 50px;
     border: 1px solid #333;
     background-color: transparent;
     color: #333;
     padding: 0 10px;
-    margin-left: 10px;
+    margin-left: -20%;
 }
 
-.form_login .input_info .toggle-password {
+/* Input type file */
+.input_info input[type="file"]::-webkit-file-upload-button {
+    height: 40px;
+    border-radius: 50px 0px 0px 50px;
+    margin-left: -3.5%;
+    border: none;
+    background-color: #fff;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    margin-right: 2%;
+    cursor: pointer;
+}
+
+
+.input_info textarea {
+    width: 120%;
+    height: 100px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background-color: transparent;
+    color: #333;
+    padding: 10px;
+    margin-left: -20%;
+}
+
+.input_info select {
+    width: 120%;
+    height: 40px;
+    border-radius: 50px;
+    border: 1px solid #333;
+    background-color: transparent;
+    color: #333;
+    padding: 0 10px;
+    margin-left: -20%;
+}
+
+.input_info .toggle-password {
     position: absolute;
     height: auto;
-    left: 87%;
+    left: 85%;
     margin-top: 2%;
     padding: 0.5rem;
     border: none;
     cursor: pointer;
     background-color: transparent;
+}
+
+#form_register .input_info input {
+    width: 100%;
+    margin-left: 0%;
+}
+
+#form_register .input_info .toggle-password {
+    left: 78%;
+    margin-top: 0.5%;
 }
 
 .form_login .botton_login {
@@ -170,6 +251,28 @@ a{
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
+}
+
+.button_show_more {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20%;
+}
+
+.button_show_more button {
+    width: 70%;
+    height: 25px;
+    border-radius: 50px;
+    border: none;
+    background-color: #030637;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.7rem;
 }
 
 .form_login .forgot_something {
@@ -196,16 +299,14 @@ a{
     height: auto;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: center;
+    padding: 20px 6px;
 }
 
 .principal_info .majach_logo {
-    width: 9%;
-    margin-right: 5%;
-}
-
-.principal_info .majach_logo img {
+    width: 30%;
+    height: auto;
     border-radius: 50%;
     box-shadow: 3px 3px 17px rgba(0, 0, 0, 0.8);
 }
@@ -213,10 +314,21 @@ a{
 .principal_info h2 {
     color: #333;
     font-weight: bold;
-    margin-bottom: 20px;
-    align-items: start;
-    position: absolute;
-    left: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.principal_info .register_button {
+    width: 30%;
+    height: auto;
+    border-radius: 50px;
+    border: none;
+    background-color: #030637;
+    color: #ffffff;
+    padding: 10px 20px;
+    cursor: pointer;
 }
 
 #form_register {
@@ -228,44 +340,6 @@ a{
     justify-content: center;
     padding: 20px 6px;
     margin-left: 20%;
-}
-
-#form_register .input_info {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-#form_register .input_info label {
-    color: #333;
-    font-weight: bold;
-    width: 40%;
-}
-
-#form_register .input_info input {
-    width: 100%;
-    height: 40px;
-    border-radius: 50px;
-    border: 1px solid #333;
-    background-color: transparent;
-    color: #333;
-    padding: 0 10px;
-    margin-left: 10px;
-}
-
-#form_register .input_info .toggle-password {
-    position: absolute;
-    height: auto;
-    left: 78.5%;
-    margin-top: 0.4%;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
 }
 
 #form_register .aligth_center {
@@ -281,7 +355,7 @@ a{
 #form_register .register_button {
     width: 50%;
     height: auto;
-    border-radius: 50px !important;
+    border-radius: 50px;
     border: none;
     background-color: #030637;
     color: #ffffff;
@@ -302,36 +376,578 @@ a{
     background-color: #ffffff;
 }
 
+.edit_info {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0px;
+    font-size: 2rem;
+}
+
+#user_form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 20px 6px;
+}
+
+#user_form .input_info input {
+    width: 110%;
+    margin-left: -10%;
+}
+
+#user_form .input_info .toggle-password {
+    left: 85%;
+    margin-top: 0.5%;
+}
+
+.responsive_register_button {
+    display: none;
+}
+
+.register_button {
+    width: 100%;
+    height: auto;
+    background-color: #030637;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.register_button:hover {
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.bg-none {
+    background-color: transparent !important;
+    color: #333 !important;
+}
+
+.button-sidebar {
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    margin-top: -9%;
+    margin-left: 4%;
+    cursor: pointer;
+}
+
+.close-sidebar {
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    margin-top: -9%;
+    margin-left: 4%;
+    cursor: pointer;
+}
+
+.transparent-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.display_none {
+    display: none;
+}
+
+.box-carousel {
+    width: 100%;
+    height: 40vh;
+}
+
+.flex-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-items-q {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: black;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    grid-gap: 20px;
+    padding: 3% 0%;
+}
+
+.grid-item {
+    width: 32%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    border: 1px solid #333;
+}
+
+.name-topic {
+    color: #000;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.box-img {
+    width: 100%;
+    height: 12vh;
+    background-color: #333;
+}
+
+.conatiner-ineer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.box-items {
+    width: 100%;
+    max-height: 20vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.box-items img {
+    width: 100%;
+    max-height: 15vh;
+    margin-bottom: 10%;
+    object-fit: cover;
+}
+
+.box-product {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    justify-content: space-around;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+}
+
+.button-class {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.item-cash {
+    background-color: transparent;
+    color: #000;
+    border: none;
+}
+
+.container-photo {
+    width: 100%;
+    max-height: 50vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container-photo img {
+    width: auto;
+    max-height: 50vh;
+}
+
+.text-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #466475;
+    color: #ffffff;
+}
+
+.fav-item {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.cont-flex {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.bigger-icon {
+    font-size: 4rem !important;
+}
+
+.padding-context {
+    padding: 10px;
+}
+
+.star {
+    color: #bbb;
+    font-size: 20px;
+    transition: color .4s;
+    cursor: pointer;
+}
+
+.star:hover,
+.star.star-selected {
+    color: #f8d100;
+}
+
+.btn-buyproduct {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+    background-color: green;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
+.btn-cancel {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #030637;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
+.btn-back {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #030637;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
+.conntainer-comment {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: hsl(0, 0%, 43%);
+}
+
+.textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.btn-comment {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #030637;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
+.btn-transparent {
+    height: auto;
+    display: flex;
+    padding: 10px;
+    background-color: transparent;
+    color: #000;
+    border: none;
+    border-radius: 50px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+label {
+    color: #f8d100;
+}
+
+.see-rating {
+    color: #bbb;
+    font-size: 20px;
+    transition: color .4s;
+}
+
+.circle-img {
+    border-radius: 50%;
+}
+
+.fixed-container {
+    width: 27%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-blue {
+    background-color: #073F74;
+    color: #ffffff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.container-product {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.cart-product {
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.input-quantity {
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid #333;
+    background-color: #fff;
+    margin: 10px;
+}
+
+.add-minus-price-btn {
+    width: 100%;
+    height: auto;
+    border: none;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+
+.img-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.responsive-text {
+    display: block;
+}
+
+.responsive-blanc {
+    color: #fff;
+}
+
+.table-color-blue {
+    background-color: #073F74 !important;
+    color: #ffffff !important;
+}
+
+.text-information-seller {
+    color: #ffffff;
+    font-size: 0.6rem;
+}
+
+.text-delivery {
+    color: #ffffff;
+    font-size: 0.8rem;
+}
+
+.box-forgot {
+    border: 1px solid #333;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.chart {
+    width: 100%;
+    /* Por defecto, ocupará todo el ancho del contenedor */
+    height: 300px;
+    /* Altura fija */
+}
+
+/* Clase para contenedor principal */
+.form-container {
+    width: 80%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Clase para etiqueta de formulario */
+.form-label {
+    font-weight: bold;
+}
+
+/* Clase para input de formulario */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Clase para botón de formulario */
+.form-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
 /* Pantallas pequeñas (celulares) */
 @media (max-width: 765px) {
     .me-2 {
-        width: 27vh !important;
+        width: 24vh !important;
+    }
+
+    #body {
+        margin-left: 0;
     }
 
     .login_button {
-        width: 100%;
-    }
-
-    .input_search span {
-        left: 90% !important;
-        transform: translate(-90%, -55%) !important;
-        top: 35%;
+        width: 80%;
     }
 
     .principal_info h2 {
-        left: 50%;
-        font-size: 1.3rem;
+        left: 65%;
+        font-size: 1.1rem;
     }
 
-    .register_view {
-        width: 100%;
-        height: auto;
-        display: flex;
+    .input_info label {
+        font-size: 0.8rem;
+        padding-right: 3%;
     }
 
-    .form_login .input_info .toggle-password {
-        left: 82%;
-        margin-top: 1%;
+    .input_info input {
+        font-size: 0.8rem;
+        margin-left: 5% !important;
+    }
+
+    .input_info textarea {
+        font-size: 0.8rem;
+        margin-left: 5% !important;
+    }
+
+    .input_info select {
+        font-size: 0.8rem;
+        margin-left: 5% !important;
+    }
+
+    .input_info input[type="file"]::-webkit-file-upload-button {
+        margin-left: -7%;
+    }
+
+    .input_info .toggle-password {
+        left: 80%;
     }
 
     #form_register {
@@ -339,36 +955,160 @@ a{
         margin-left: 0;
     }
 
-    #form_register .input_info label {
-        width: 50%;
+    #form_register .input_info .toggle-password {
+        left: 80%;
+        margin-top: 2%;
     }
 
-    #form_register .input_info .toggle-password {
-        left: 82%;
-        margin-top: 1%;
+    .self_responsive_end {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .full-screen-responsive {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .full-screen-responsive .toggle-password {
+        left: 65% !important;
+        margin-top: 1% !important;
+    }
+
+    .principal_info .register_button {
+        display: none;
+    }
+
+    .principal_info .majach_logo {
+        width: 100%;
+    }
+
+    .responsive_register_button {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background-color: #030637;
+        border-radius: 50%;
+    }
+
+    .button-sidebar {
+        display: flex;
+    }
+
+    #sidebar {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+    }
+
+    #sidebar ul {
+        margin-top: 0%;
+    }
+
+    .box-carousel {
+        height: 15vh;
+    }
+
+    .box-topics {
+        margin: 10px 0px;
+    }
+
+    .button_show_more {
+        margin-top: -10%;
+    }
+
+    .name-topic {
+        font-size: 0.8rem;
+    }
+
+    .grid-item {
+        width: 100%;
+    }
+
+    .fixed-container {
+        width: 45%;
+    }
+
+    .button-class {
+        justify-content: center;
+    }
+
+    .cart-product {
+        height: auto;
+        padding: 10px;
+    }
+
+    .cart-product img {
+        width: 100%;
+    }
+
+    .cart-product h4 {
+        font-size: 0.8rem;
+    }
+
+    .cart-product p {
+        font-size: 0.7rem;
+    }
+
+    .cart-product .button-class {
+        width: 100%;
+        font-size: 0.7rem;
+    }
+
+    .input-quantity {
+        width: 200%;
+        margin-left: -120%;
+    }
+
+    .add-minus-price-btn {
+        font-size: 1rem;
+        margin: 0 5px;
+    }
+
+    .responsive-text {
+        display: none;
+    }
+
+    .responsive-blanc {
+        color: #000;
+    }
+
+    .chart {
+        height: 350px;
     }
 }
 
 /* Pantallas medianas (tablets) */
 @media (min-width: 766px) and (max-width: 1024px) {
     .me-2 {
-        width: 55vh !important;
+        width: 48vh !important;
+    }
+
+    .box-carousel {
+        height: 20vh;
     }
 
     .login_button {
         width: 30vh;
-    }
-
-    .input_search span {
-        left: 95% !important;
-        transform: translate(-95%, -55%) !important;
-        top: 35%;
-    }
-
-    .principal_info h2 {
-        margin-top: -10%;
-        left: 30%;
-        font-size: 1.3rem;
     }
 
     .register_view {
@@ -380,5 +1120,93 @@ a{
     #form_register {
         width: 100%;
         margin-left: 0;
+    }
+
+    .input_info .toggle-password {
+        margin-top: 0.8%;
+    }
+
+    #form_register .input_info .toggle-password {
+        left: 88%;
+    }
+
+    .self_responsive_end {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    #sidebar ul {
+        margin-top: 80%;
+    }
+
+    .full-screen-responsive {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .full-screen-responsive .toggle-password {
+        left: 77% !important;
+        margin-top: 1% !important;
+    }
+
+    .box-topics {
+        margin: 10px 0px;
+    }
+
+    .name-topic {
+        font-size: 1.2rem;
+        margin-left: -10px;
+    }
+
+    .button_show_more {
+        margin-left: -10%;
+        width: 150%;
+    }
+
+    .box-img {
+        height: 10vh;
+    }
+
+    .grid-item {
+        width: 48%;
+    }
+
+    .button_show_more button {
+        width: 50%;
+        font-size: 1rem;
+    }
+
+    .fixed-container {
+        width: 27%;
+    }
+
+    .cart-product {
+        height: auto;
+        padding: 10px;
+    }
+
+    .cart-product img {
+        width: 100%;
+    }
+
+    .cart-product h4 {
+        font-size: 1rem;
+    }
+
+    .cart-product p {
+        font-size: 0.9rem;
+    }
+
+    .add-minus-price-btn {
+        font-size: 1.5rem;
+        margin: 0 10px;
     }
 }
