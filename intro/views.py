@@ -978,7 +978,6 @@ def get_products(request, start_date, end_date):
 
     # Ordenar de mayor a menor
     products_sale = dict(sorted(products_sale.items(), key=lambda item: item[1], reverse=True))
-    print(products_sale)
     return JsonResponse(chart)
 
 def get_favorite(request):
