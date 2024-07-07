@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.timezone import make_aware
+from django.utils import timezone
 
-from .models import ClientSellerRelation, Product_Quantity, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart
+from .models import ClientBuilder, ClientSellerRelation, CommentBuilder, Product_Quantity, ProductBuilder, Sale, User, Client, Category, Product, Seller, Comment, Favorite, Cart, UserBuilder
 from django.core.mail import send_mail
 from django.conf import settings
 import random
@@ -106,16 +107,9 @@ def register(request):
         phone = request.POST.get('phone')
 
         if password == password2:
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                phone=phone
-            )
-            user.save()
+            user = UserBuilder().with_username(username).with_email(email).with_password(password).with_phone(phone).build()
+            client = ClientBuilder().with_user(user).build()
 
-            client = Client(user=user)
-            client.save()
 
             user = authenticate(username=username, password=password)
             login(request, user)
@@ -160,6 +154,33 @@ def buyer_user(request):
             if request.user.is_admin or request.user.is_seller:
                 return render(request, 'users/buyer_user.html')
             else:
+                # Poner categoría al usuario por respecto a ventas en un mes
+                client = Client.objects.get(user=request.user)
+                start_date = timezone.now() - datetime.timedelta(days=30)
+                end_date = timezone.now()
+
+                print("Depuración: Fecha de inicio:", start_date)
+                print("Depuración: Fecha de fin:", end_date)
+
+                try:
+                    # Contar las ventas en el rango de fechas
+                    sales_count = Sale.objects.filter(client=client.user, date__range=[start_date, end_date]).count()
+                    print("Depuración: Conteo de ventas:", sales_count)
+                    # Asignar categoría según la cantidad de ventas
+                    if sales_count >= 10:
+                        client.category = 'Oro'
+                        client.save()
+                        print("Depuración: Categoría cambiada a Oro")
+                    elif sales_count >= 5:
+                        client.category = 'Plata'
+                        client.save()
+                        print("Depuración: Categoría cambiada a Plata")
+                    elif sales_count >= 2:
+                        client.category = 'Bronce'
+                        client.save()
+                        print("Depuración: Categoría cambiada a Bronce")
+                except Exception as e:
+                    print(f"An error occurred: {e}")
                 return render(request, 'users/buyer_user.html', {
                     'client': Client.objects.get(user=request.user)
                 })
@@ -167,6 +188,7 @@ def buyer_user(request):
         return render(request, 'intro.html', {
             'error': 'Debes iniciar sesión para acceder a esta página'
         })
+
     
 def update_password_buyer(request):
     if request.user.is_authenticated:
@@ -237,15 +259,9 @@ def admin_view(request):
                         'products': Product.objects.all()
                     })
                 
-                product = Product(
-                    name=name,
-                    price=price,
-                    stock=stock,
-                    description=description,
-                    category=Category.objects.get(pk=category),
-                    photo=photo
-                )
-                product.save()
+                category = Category.objects.get(pk=category)
+                product = ProductBuilder().with_name(name).with_price(price).with_stock(stock).with_description(description).with_category(category).with_photo(photo).build()
+
                 return render(request, 'users/admin.html', {
                     'success': 'Producto creado correctamente',
                     'sellers': Seller.objects.all(),
@@ -298,13 +314,7 @@ def create_employee(request):
                     photo = 'default.png'
 
                 if password == password2:
-                    user = User.objects.create_user(
-                        username=username,
-                        email=email,
-                        password=password,
-                        phone=phone,
-                        photo=photo
-                    )
+                    user = UserBuilder().with_username(username).with_email(email).with_password(password).with_phone(phone).with_photo(photo).as_seller().build()
                     user.first_name = first_name
                     user.last_name = last_name
                     user.is_seller = True
@@ -398,11 +408,9 @@ def comment(request, product_id):
             comment = request.POST.get('comment')
             rating = request.POST.get('rating')
 
-            comment = Comment(user=user, comment=comment, stars=rating)
-            comment.save()
+            comment = CommentBuilder().with_user(user).with_comment(comment).with_stars(rating).build()
 
             product.comments.add(comment)
-            product.save()
 
             stars = 0
             for c in product.comments.all():

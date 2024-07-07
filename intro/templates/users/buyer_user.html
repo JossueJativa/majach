@@ -15,9 +15,10 @@
             <div class="col-5 text-center">
                 {% if user.first_name != "" or user.last_name != "" %}
                     <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <p>{{ client.category }}</p>
                 {% else %}
                     <h2>{{ user.username }}</h2>
-                {% endif %}  
+                {% endif %}
             </div>
             <div class="col-3 text-center">
                 <a class="register_button" href="{% url 'intro:logout' %}" data-section="layout" data-value="logout"></a>
