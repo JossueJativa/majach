@@ -116,3 +116,20 @@ El administrador al tener la capacidad de ingresar de forma sencilla y simple lo
 
 De aqui podremos ver como se puede ingresar a la aplicacion por medio del diagrama de flujo, aqui se puede ver como se ingresa el administrador, el vendedor y el comprador mediante una verificacion de roles.
 <img src="./img_readme/Imagen2.png" width="100%" style="background-color:white" alt="Diagrama de flujo">
+
+# Principios SOLID y Patrones de Dieño
+## Principios SOLID
+### SRP (Single Responsability Principle): 
+Este principio solid hace referencia a que cada clase debe tener únicamente una sola responsabilidad. En este caso las clases como tal únicamente tienen la responsabilidad de crear una instancia en la base de datos. 
+
+### Open Closed Principle: 
+Este principio hace referencia a cuando se pretenda introducir un comportamiento ya existente en el sistema, se deberán crear nuevas clases, pero usando herencia de una clase padre o inyectando dependencias para poder dar la funcionalidad que se quiere, en este caso podemos ver que la clase usuarios hereda de otra clase llamada AbstractUser, y a esta se le agregan todas las funcionalidades que se requieran 
+
+### Interface Segregation: 
+Este principio tiene como objetivo desacoplar el código en dependencias directas, haciendo que no se dependa de cales superarlos o inferiores, pero de su abstracción. Esto da origen a inyección de dependencias donde una clase inyecta objetos a otra en vez de tener que instanciar los objetos. Esto lo podemos ver cuando vemos un Foreign Key en las clases ya que se esta haciendo referencia a otros datos, sin tener que instanciarlos. 
+
+## Patrones de Diseño
+### Builder: 
+Builder es un factor el cual ayuda en la construcción de las clases en la base de datos, para realizarlo de mejor manera y con menos lineas de código, para eso se ayuda de la clase normal que se instancia en la base de datos y el buider se encarga de construir y guardar los datos correctamente en la clase para que se agreden en la base de datos con la clase 
+### Factory Method: 
+Es el cual se realiza al crear una clase, y de ella pueden salir mas de un objeto, como en este ejemplo se hace para que se puedan crear distintos tipos de usuarios con la clase de factory method
