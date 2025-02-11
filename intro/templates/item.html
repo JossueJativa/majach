@@ -93,10 +93,6 @@
                 </form>
                 {% else %}
                 <h6 data-section="item" data-value="no-stock"></h6>
-                <form action="{% url 'intro:add_to_cart' product.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-buyproduct" disabled><span data-section="item" data-value="add-cart"></span></button>
-                </form>
                 {% endif %}
             </div>
         </div>

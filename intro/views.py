@@ -49,6 +49,7 @@ def items_category(request, category):
         products = paginator.page(1)
 
     return render(request, 'items_category.html', {
+        'url_name': 'products/' + category,
         'entity': products,
         'paginator': paginator
     })
@@ -391,6 +392,7 @@ def look_clients(request):
             clients = paginator.page(1)
 
         return render(request, 'users/employee.html', {
+            'url_name': 'look_clients',  # Corrected here
             'employee': employee,
             'entity': clients,
             'paginator': paginator
@@ -816,15 +818,12 @@ def complete_buy(request):
     
 def accept_sale(request, id, text):
     if request.user.is_authenticated and request.user.is_seller:
-        # paginador
-        page = request.GET.get('page', 1)
+        employee = Seller.objects.get(user=request.user)
         try:
             paginator = Paginator(ClientSellerRelation.objects.filter(seller=Seller.objects.get(user=request.user), done_sale=False), 10)
-            entity = paginator.page(page)
         except:
             paginator = Paginator(ClientSellerRelation.objects.filter(seller=Seller.objects.get(user=request.user), done_sale=False), 1)
-            entity = paginator.page(1)
-        if (text == "entregado"):
+        if text == "entregado":
             relation = ClientSellerRelation.objects.get(pk=id)
             relation.done_sale = True
             relation.save()
@@ -835,19 +834,20 @@ def accept_sale(request, id, text):
                 product.stock -= p.quantity
                 product.save()
 
+            relations = ClientSellerRelation.objects.filter(seller=employee)
+
             return render(request, 'users/employee.html', {
                 'success': 'Venta aceptada correctamente',
-                'entity': relation,
+                'entity': relations,
                 'paginator': paginator
             })
 
         elif (text == "rechazado"):
-            relation = ClientSellerRelation.objects.get(pk=id)
-            relation.delete()
+            relations = ClientSellerRelation.objects.filter(seller=employee)
 
             return render(request, 'users/employee.html', {
                 'success': 'Venta rechazada correctamente',
-                'entity': entity,
+                'entity': relations,
                 'paginator': paginator
             })
         else:
